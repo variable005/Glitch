@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glitch 1.0 | Protocol Initialized</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+
+    <style>
+        :root {
+            --bg: #000000;
+            --primary-accent: #FF0000;
+            --text-primary: #FFFFFF;
+            --text-secondary: #AAAAAA;
+            --border-color: rgba(255, 0, 0, 0.2);
+            --font-main: 'Orbitron', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-main); background-color: var(--bg); color: var(--text-secondary);
+            line-height: 1.6; overflow-x: hidden;
+        }
+
+        /* --- BACKGROUND & CURSOR --- */
+        #galaxy-video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; }
+        #galaxy-video-bg video { min-width: 100%; min-height: 100%; width: auto; height: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); object-fit: cover; filter: brightness(0.6) contrast(1.1) grayscale(50%); opacity: 0.8; }
+        #cursor { position: fixed; width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle at center, transparent 0%, transparent 40%, rgba(255, 0, 0, 0.8) 45%, rgba(255, 0, 0, 0.4) 55%, transparent 70%); pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.15s ease-out, background 0.2s ease-out; box-shadow: 0 0 30px rgba(255, 0, 0, 0.5); }
+        #cursor.hovered { transform: translate(-50%, -50%) scale(1.3); background: radial-gradient(circle at center, rgba(255, 0, 0, 0.2) 0%, transparent 40%, rgba(255, 0, 0, 1) 45%, rgba(255, 0, 0, 0.5) 55%, transparent 70%); }
+        @media (pointer: coarse) { #cursor { display: none; } body { cursor: auto; } }
+
+        /* --- GENERAL LAYOUT & TYPOGRAPHY --- */
+        .container { max-width: 1000px; margin: 0 auto; padding: 120px 20px; }
+        .container-fullwidth { padding: 0; }
+        h1, h2, h3 { font-weight: 700; color: var(--text-primary); text-transform: uppercase; }
+        h1 { font-size: clamp(3rem, 10vw, 7rem); font-weight: 900; letter-spacing: 0.05em; line-height: 1; }
+        h2 { font-size: clamp(2rem, 5vw, 2.5rem); text-align: center; margin-bottom: 20px; letter-spacing: 0.02em; }
+        h3 { font-size: clamp(1.1rem, 3vw, 1.25rem); }
+        p, li { max-width: 650px; margin: 0 auto; }
+        .section-subtitle { text-align: center; margin: 0 auto 60px auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        ul { list-style: none; padding-left: 20px; }
+        li { position: relative; padding: 4px 0; transition: all 0.3s ease; }
+        li::before { content: '>'; position: absolute; left: -20px; color: var(--primary-accent); font-weight: 900; transition: all 0.3s ease; }
+        li:hover { color: var(--text-primary); transform: translateX(10px); text-shadow: 0 0 8px var(--primary-accent); }
+        li:hover::before { transform: scale(1.5); text-shadow: 0 0 10px var(--primary-accent); }
+        header.main-header { display: flex; align-items: center; justify-content: space-between; position: absolute; top: 0; left: 0; width: 100%; padding: 30px 5%; z-index: 10;}
+        header nav { display: flex; gap: 30px; }
+        header nav a { color: var(--text-secondary); text-decoration: none; font-weight: 700; transition: color 0.2s; }
+        header nav a:hover { color: var(--text-primary); text-shadow: 0 0 5px var(--primary-accent); }
+        .logo { font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; color: var(--text-primary); }
+
+        /* --- HERO SECTION --- */
+        #hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .hero-title { color: var(--text-primary); position: relative; }
+        .hero-title:hover::before { left: 3px; text-shadow: -3px 0 var(--primary-accent); animation: text-glitch-1 1s infinite linear alternate-reverse; }
+        .hero-title:hover::after { left: -3px; text-shadow: 3px 0 #00ffff, -2px -2px var(--primary-accent); animation: text-glitch-2 1s infinite linear alternate-reverse; }
+        .hero-title::before, .hero-title::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; color: var(--text-primary); }
+
+        /* --- MAGNETIC CTA BUTTON --- */
+        .magnetic-button { display: inline-block; position: relative; background-color: var(--primary-accent); color: var(--bg); padding: 16px 40px; border-radius: 5px; text-decoration: none; font-weight: 700; text-transform: uppercase; margin-top: 40px; transition: transform 0.3s cubic-bezier(0.2, 1, 0.8, 1), background-color 0.2s; z-index: 2; }
+        .magnetic-button:hover { background-color: #ffffff; color: var(--primary-accent); box-shadow: 0 0 20px #ffffff; }
+
+        /* --- LIQUID GLASS CARD --- */
+        .card { background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px) saturate(120%); -webkit-backdrop-filter: blur(15px) saturate(120%); border: 1px solid var(--border-color); border-radius: 8px; padding: 30px; position: relative; overflow: hidden; transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease; z-index: 1; height: 100%; }
+        .card:hover { transform: translateY(-5px); background: rgba(30, 0, 0, 0.6); border-color: var(--primary-accent); box-shadow: 0 0 25px rgba(255, 0, 0, 0.5); }
+        .card h3 { color: var(--primary-accent); margin-bottom: 15px; }
+        .card strong { color: var(--text-primary); }
+        .card::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--primary-accent), transparent); box-shadow: 0 0 10px var(--primary-accent); transition: top 0.6s ease-in-out; }
+        .card:hover::after { top: 100%; }
+
+        /* --- INTERACTIVE EXPANDING CARDS --- */
+        .expanding-card-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            height: 350px; /* Set a fixed height for the container */
+        }
+        .expanding-card {
+            background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px) saturate(120%); -webkit-backdrop-filter: blur(15px) saturate(120%);
+            border: 1px solid var(--border-color); border-radius: 8px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: flex 0.7s cubic-bezier(0.61, 0, 0.3, 1);
+            flex: 1;
+        }
+        .expanding-card:hover {
+            flex: 5; /* Expand on hover */
+        }
+        .expanding-card h3 {
+            color: var(--primary-accent);
+            margin-bottom: 15px;
+        }
+        .expanding-card ul {
+            opacity: 0; /* Content is hidden by default */
+            transition: opacity 0.5s ease 0.3s;
+        }
+        .expanding-card:hover ul {
+            opacity: 1; /* Show content on hover */
+        }
+
+        /* --- CINEMATIC PHASES SECTION --- */
+        .sticky-container { height: 300vh; position: relative; }
+        .sticky-content { position: sticky; top: 0; height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 5%; padding: 0 5%; overflow: hidden; }
+        .phase-visual { position: relative; display: flex; justify-content: center; align-items: center; height: 100%; }
+        .phase-number { font-size: 40vw; font-weight: 900; color: rgba(255, 255, 255, 0.4); text-shadow: 0 0 25px rgba(255, 255, 255, 0.5); position: absolute; transition: opacity 0.5s ease-in-out; }
+        #phase-num-1 { opacity: 1; }
+        #phase-num-2, #phase-num-3 { opacity: 0; }
+        .phase-descriptions { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+        .phase-text-block { transition: opacity 0.5s ease-in-out; }
+        .phase-text-block h3 { color: var(--primary-accent); }
+        .phase-text-block p { color: var(--text-secondary); max-width: 400px; }
+
+        /* --- RESPONSIVE TABLES --- */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { color: var(--primary-accent); text-transform: uppercase; }
+        tr { transition: all 0.3s ease-out; }
+        td { color: var(--text-secondary); }
+        td strong { color: var(--text-primary); }
+        tr:hover { background: rgba(255, 0, 0, 0.1); transform: scale(1.02); border-color: var(--primary-accent); box-shadow: 0 0 15px rgba(255, 0, 0, 0.3); z-index: 2; position: relative; }
+        tr:hover td { color: var(--text-primary); }
+
+        /* --- FOOTER & COUNTDOWN --- */
+        footer { text-align: center; border-top: 1px solid var(--border-color); background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1; }
+        .footer-quote { font-size: 1.1rem; color: #aaa; margin: 40px auto; max-width: 500px; }
+        #countdown-timer { display: flex; justify-content: center; gap: 20px; margin: 40px auto; flex-wrap: wrap; }
+        .timer-box { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; min-width: 100px; }
+        .timer-box span { display: block; }
+        .timer-box span:first-child { font-family: var(--font-heading); font-size: 3rem; color: var(--primary-accent); }
+        .timer-box span:last-child { font-size: 0.9rem; }
+        .organizers { margin-top: 60px; }
+        .webpage-credit { font-size: 0.9rem; margin-top: 15px; color: var(--text-secondary); }
+        .webpage-credit a { color: var(--text-primary); text-decoration: none; transition: color 0.2s, text-shadow 0.2s; }
+        .webpage-credit a:hover { color: var(--primary-accent); text-shadow: 0 0 8px var(--primary-accent); }
+
+
+        /* --- SCROLL ANIMATION --- */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.2, 1, 0.8, 1), transform 0.8s cubic-bezier(0.2, 1, 0.8, 1); }
+        .fade-in.is-visible { opacity: 1; transform: translateY(0); }
+
+        /* --- ANIMATIONS --- */
+        @keyframes text-glitch-1 { 0% { clip-path: inset(42% 0 54% 0); } 100% { clip-path: inset(58% 0 34% 0); } }
+        @keyframes text-glitch-2 { 0% { clip-path: inset(12% 0 85% 0); } 100% { clip-path: inset(70% 0 2% 0); } }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 768px) {
+            .container { padding: 80px 15px; }
+            p, li { text-align: left; margin: 0; }
+            header nav { display: none; }
+            li:hover { transform: translateX(5px); }
+            .grid, .sticky-content, .expanding-card-container { grid-template-columns: 1fr; flex-direction: column; height: auto;}
+            .phase-visual { display: none; }
+            .phase-text-block { padding: 40px 0; }
+            table, thead, tbody, th, td, tr { display: block; }
+            thead tr { position: absolute; top: -9999px; left: -9999px; }
+            tr { border: 1px solid var(--border-color); margin-bottom: 15px; }
+            tr:hover { transform: scale(1.01); }
+            td { border: none; border-bottom: 1px solid #333; position: relative; padding-left: 50%; text-align: right; }
+            td:last-child { border-bottom: none; }
+            td:before { position: absolute; top: 12px; left: 15px; width: 45%; padding-right: 10px; white-space: nowrap; text-align: left; content: attr(data-label); color: var(--primary-accent); font-weight: bold; text-transform: uppercase; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="galaxy-video-bg">
+    <video autoplay muted loop playsinline>
+        <source src="hu.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<div id="cursor"></div>
+
+<header class="main-header">
+    <div class="logo">Glitch 1.0</div>
+    <nav>
+        <a href="#about">About</a>
+        <a href="#phases">Phases</a>
+        <a href="#schedule">Timeline</a>
+    </nav>
+</header>
+
+<main>
+    <section id="hero">
+        <h1 class="hero-title" data-text="Glitch 1.0">Glitch 1.0</h1>
+        <p class="section-subtitle fade-in" style="max-width: 600px; transition-delay: 0.5s;">
+            “Unlocking the Future. One Glitch at a Time.”
+        </p>
+        <a href="#footer" class="magnetic-button fade-in" style="transition-delay: 0.8s;">SUBMIT YOUR IDEA ></a>
+    </section>
+
+    <section id="about" class="container">
+        <h2 class="fade-in">About The Event</h2>
+        <p class="section-subtitle fade-in">
+            Glitch 1.0 is a futuristic coding battleground where logic and creativity are tested, open to teams of 1-2 members.
+        </p>
+        <div class="expanding-card-container fade-in">
+            <div class="expanding-card">
+                <h3>Key Info</h3>
+                <ul>
+                    <li><strong>Format:</strong> 3-Hour Vibe Coding Session</li>
+                    <li><strong>Teams:</strong> 1-2 Members</li>
+                    <li><strong>Capacity:</strong> 50 Students Only</li>
+                    <li><strong>Venue:</strong> Amity University Patna</li>
+                </ul>
+            </div>
+            <div class="expanding-card">
+                <h3>Participant Benefits</h3>
+                <ul>
+                    <li>Gain real hackathon experience</li>
+                    <li>Receive certificates for participation</li>
+                    <li>Recognition for top teams</li>
+                    <li>Boost your resume & portfolio</li>
+                    <li>Network with peers & experts</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="phases" class="container-fullwidth">
+        <div class="sticky-container">
+            <div class="sticky-content">
+                <div class="phase-visual">
+                    <div class="phase-number" id="phase-num-1">1</div>
+                    <div class="phase-number" id="phase-num-2">2</div>
+                    <div class="phase-number" id="phase-num-3">3</div>
+                </div>
+                <div class="phase-descriptions">
+                    <div class="phase-text-block">
+                        <h3>Phase One – Idea Protocol</h3>
+                        <p>An online submission round where teams submit their project ideas. Only the top 50 most innovative concepts will be selected to advance.</p>
+                    </div>
+                    <div class="phase-text-block">
+                        <h3>Phase Two – Vibe Coding</h3>
+                        <p>The selected 50 teams compete in a high-stakes, 3-hour on-campus coding session, solving real-world problems under pressure.</p>
+                    </div>
+                    <div class="phase-text-block">
+                        <h3>Phase Three – The Mainframe</h3>
+                        <p>The best of the best face off in the grand finale with tougher problem statements and surprise twists for final recognition and glory.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="schedule" class="container">
+        <h2 class="fade-in">Event Flow & Timeline</h2>
+        <p class="section-subtitle fade-in">Stay synchronized. Total duration is approximately 4 hours.</p>
+        <div class="fade-in">
+            <table>
+                <thead>
+                <tr><th>Time</th><th>Activity</th><th>Notes</th></tr>
+                </thead>
+                <tbody>
+                <tr><td data-label="Time"><strong>0:00 – 0:20</strong></td><td data-label="Activity">Registration & Welcome</td><td data-label="Notes">Team check-in, stickers, briefing</td></tr>
+                <tr><td data-label="Time"><strong>0:20 – 0:50</strong></td><td data-label="Activity">Icebreaker / Team Warm-up</td><td data-label="Notes">Fun games and challenges</td></tr>
+                <tr><td data-label="Time"><strong>0:50 – 1:00</strong></td><td data-label="Activity">Rules & Guidelines</td><td data-label="Notes">Categories + format explained</td></tr>
+                <tr><td data-label="Time"><strong>1:00 – 4:00</strong></td><td data-label="Activity">Coding / Hacking Session</td><td data-label="Notes">3-hour hackathon sprint</td></tr>
+                <tr><td data-label="Time"><strong>4:00 – 4:30</strong></td><td data-label="Activity">Submission & Demo Prep</td><td data-label="Notes">Final touches</td></tr>
+                <tr><td data-label="Time"><strong>4:30 – 5:00</strong></td><td data-label="Activity">Demos & Judging</td><td data-label="Notes">Quick presentations + feedback</td></tr>
+                <tr><td data-label="Time"><strong>5:00</strong></td><td data-label="Activity">Closing Remarks</td><td data-label="Notes">Certificates + group photo</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="categories" class="container">
+        <h2 class="fade-in">Challenge Categories</h2>
+        <p class="section-subtitle fade-in">Problem statements will be released on hackathon day.</p>
+        <div class="grid fade-in">
+            <div class="card"><h3>Environment & Sustainability</h3></div>
+            <div class="card"><h3>Healthcare & Wellbeing</h3></div>
+            <div class="card"><h3>Innovation & Productivity</h3></div>
+            <div class="card"><h3>Education & Learning</h3></div>
+            <div class="card"><h3>Fun & Lifestyle</h3></div>
+        </div>
+    </section>
+</main>
+
+<footer id="footer">
+    <div class="container">
+        <h2 class="fade-in">Submit Your Idea</h2>
+        <p class="footer-quote fade-in">“Glitch isn’t an error. It’s a chance to rewrite the system.”</p>
+        <div id="countdown-timer" class="fade-in">
+            <div class="timer-box"><span id="days">00</span><span>Days</span></div>
+            <div class="timer-box"><span id="hours">00</span><span>Hours</span></div>
+            <div class="timer-box"><span id="minutes">00</span><span>Mins</span></div>
+            <div class="timer-box"><span id="seconds">00</span><span>Secs</span></div>
+        </div>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdlHxboPg96_TheJKWjZwsnG7su4bEBF8AKjv9TlfO62rRM9Q/viewform" target="_blank" class="magnetic-button fade-in">Submit Now</a>
+        <div class="organizers">
+            <p><strong>Organized by: Techpreneur Club, Amity institute of Information and Technology, Amity University Patna</strong></p>
+        </div>
+        <p class="webpage-credit">
+            Webpage by <a href="https://www.linkedin.com/in/hariom-sharnam" target="_blank" rel="noopener noreferrer">Hariom Sharnam</a>
+        </p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // --- CUSTOM CURSOR ---
+        const cursor = document.getElementById('cursor');
+        const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (!isTouchDevice()) {
+            document.body.style.cursor = 'none';
+            window.addEventListener('mousemove', e => {
+                gsap.to(cursor, { duration: 0.3, x: e.clientX, y: e.clientY, ease: 'power2.out' });
+            });
+            const hoverables = document.querySelectorAll('a, button, .card, tr, .expanding-card');
+            hoverables.forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+        } else {
+            if(cursor) cursor.style.display = 'none';
+        }
+
+        // --- MAGNETIC BUTTONS ---
+        const magneticButtons = document.querySelectorAll('.magnetic-button');
+        magneticButtons.forEach(button => {
+            button.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(this, { duration: 0.3, x: x * 0.2, y: y * 0.2, ease: 'power2.out' });
+            });
+            button.addEventListener('mouseleave', function() {
+                gsap.to(this, { duration: 0.3, x: 0, y: 0, ease: 'elastic.out(1, 0.3)' });
+            });
+        });
+
+        // --- SCROLL-TRIGGERED FADE-IN ANIMATIONS ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // --- COUNTDOWN TIMER ---
+        const countdown = () => {
+            const countToDate = new Date("2025-09-15T00:00:00").getTime();
+            const now = new Date().getTime();
+            const difference = countToDate - now;
+
+            if (document.getElementById('days')) {
+                if (difference < 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('countdown-timer').innerHTML = "<h3>Submissions Closed!</h3>";
+                    return;
+                }
+                const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((difference % (1000 * 60)) / 1000);
+                document.getElementById('days').innerText = d < 10 ? '0' + d : d;
+                document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
+                document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
+                document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
+            }
+        };
+        const countdownInterval = setInterval(countdown, 1000);
+        countdown();
+
+        // --- CINEMATIC PHASES SCROLL ---
+        const stickyContainer = document.querySelector('.sticky-container');
+        if (stickyContainer) {
+            const phaseNumbers = document.querySelectorAll('.phase-number');
+            const phaseTextBlocks = document.querySelectorAll('.phase-text-block');
+
+            window.addEventListener('scroll', () => {
+                const rect = stickyContainer.getBoundingClientRect();
+                if (rect.top <= 0 && rect.bottom >= window.innerHeight) {
+                    const scrollPercent = -rect.top / (rect.height - window.innerHeight);
+
+                    let activePhase = Math.floor(scrollPercent * phaseNumbers.length);
+                    if (activePhase >= phaseNumbers.length) {
+                        activePhase = phaseNumbers.length - 1;
+                    }
+
+                    phaseNumbers.forEach((num, index) => {
+                        num.style.opacity = index === activePhase ? '1' : '0.05';
+                    });
+                    phaseTextBlocks.forEach((text, index) => {
+                        text.style.opacity = index === activePhase ? '1' : '0.3';
+                    });
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
