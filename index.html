@@ -47,7 +47,7 @@
         li::before { content: '>'; position: absolute; left: -20px; color: var(--primary-accent); font-weight: 900; transition: all 0.3s ease; }
         li:hover { color: var(--text-primary); transform: translateX(10px); text-shadow: 0 0 8px var(--primary-accent); }
         li:hover::before { transform: scale(1.5); text-shadow: 0 0 10px var(--primary-accent); }
-        
+
         /* --- HEADER & NAVIGATION --- */
         header.main-header { display: flex; align-items: center; justify-content: space-between; position: absolute; top: 0; left: 0; width: 100%; padding: 30px 5%; z-index: 10;}
         .logo { font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; color: var(--text-primary); z-index: 101; }
@@ -154,7 +154,7 @@
                 overflow: hidden;
             }
             .phase-text-block p { max-width: 100%; }
-            
+
             .phase-text-block h3::before {
                 counter-increment: phase-counter;
                 content: "0" counter(phase-counter);
@@ -177,7 +177,7 @@
         @media (max-width: 768px) {
             .container { padding: 80px 15px; }
             p, li { text-align: left; margin: 0 auto; max-width: 100%; }
-            
+
             /* --- Mobile Navigation --- */
             header.main-header.nav-open .logo { color: var(--primary-accent); }
             .hamburger-menu {
@@ -203,7 +203,7 @@
             header.nav-open .hamburger-menu span:nth-child(1) { top: 9px; transform: rotate(135deg); }
             header.nav-open .hamburger-menu span:nth-child(2) { opacity: 0; left: -30px; }
             header.nav-open .hamburger-menu span:nth-child(3) { top: 9px; transform: rotate(-135deg); }
-            
+
             header nav {
                 position: fixed;
                 top: 0; left: 0;
@@ -380,7 +380,7 @@
             <p><strong>Organized by: Techpreneur Club, Amity institute of Information and Technology, Amity University Patna</strong></p>
         </div>
         <p class="webpage-credit">
-            Webpage by <a href="https://www.linkedin.com/in/hariom-sharnam" target="_blank" rel="noopener noreferrer">Hariom Sharnam</a>
+            Webpage by <a href="https://www.linkedin.com/in/hariom-sharnam" target="_blank" rel="noopener noreferrer">Hariom Sharnam</a> & <a href="https://www.linkedin.com/in/onlywith-ashwin/" target="_blank" rel="noopener noreferrer">Ashwin Mehta</a>
         </p>
     </div>
 </footer>
@@ -392,7 +392,7 @@
         const hamburger = document.querySelector('.hamburger-menu');
         const header = document.querySelector('.main-header');
         const navLinks = document.querySelectorAll('#main-nav a');
-        
+
         hamburger.addEventListener('click', () => {
             header.classList.toggle('nav-open');
         });
