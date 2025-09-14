@@ -23,6 +23,7 @@
         body {
             font-family: var(--font-main); background-color: var(--bg); color: var(--text-secondary);
             line-height: 1.6; overflow-x: hidden;
+            padding-top: 50px; /* Make space for the new top timer bar */
         }
 
         /* --- BACKGROUND & CURSOR --- */
@@ -31,6 +32,41 @@
         #cursor { position: fixed; width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle at center, transparent 0%, transparent 40%, rgba(255, 0, 0, 0.8) 45%, rgba(255, 0, 0, 0.4) 55%, transparent 70%); pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.15s ease-out, background 0.2s ease-out; box-shadow: 0 0 30px rgba(255, 0, 0, 0.5); }
         #cursor.hovered { transform: translate(-50%, -50%) scale(1.3); background: radial-gradient(circle at center, rgba(255, 0, 0, 0.2) 0%, transparent 40%, rgba(255, 0, 0, 1) 45%, rgba(255, 0, 0, 0.5) 55%, transparent 70%); }
         @media (pointer: coarse) { #cursor { display: none; } body { cursor: auto; } }
+
+        /* --- TOP TIMER BAR --- */
+        #top-timer-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--text-primary);
+            text-align: center;
+            padding: 10px 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        #top-timer-bar strong {
+            color: var(--primary-accent);
+            text-transform: uppercase;
+        }
+        #top-timer-countdown {
+            display: flex;
+            gap: 8px;
+        }
+        #top-timer-countdown span {
+            background: rgba(255, 0, 0, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
 
         /* --- GENERAL LAYOUT & TYPOGRAPHY --- */
         .container { max-width: 1000px; margin: 0 auto; padding: 120px 20px; }
@@ -49,7 +85,7 @@
         li:hover::before { transform: scale(1.5); text-shadow: 0 0 10px var(--primary-accent); }
 
         /* --- HEADER & NAVIGATION --- */
-        header.main-header { display: flex; align-items: center; justify-content: space-between; position: absolute; top: 0; left: 0; width: 100%; padding: 30px 5%; z-index: 10;}
+        header.main-header { display: flex; align-items: center; justify-content: space-between; position: absolute; top: 50px; left: 0; width: 100%; padding: 30px 5%; z-index: 10;} /* Adjusted top position */
         .logo { font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; color: var(--text-primary); z-index: 101; }
         header nav { display: flex; gap: 30px; }
         header nav a { color: var(--text-secondary); text-decoration: none; font-weight: 700; transition: color 0.2s; }
@@ -75,6 +111,46 @@
         .card::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--primary-accent), transparent); box-shadow: 0 0 10px var(--primary-accent); transition: top 0.6s ease-in-out; }
         .card:hover::after { top: 100%; }
 
+        /* --- LOCKED PROBLEM CARD --- */
+        .locked-card {
+            text-align: center;
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.2);
+        }
+        .locked-card .lock-icon {
+            font-size: 3rem;
+            color: var(--primary-accent);
+            text-shadow: 0 0 15px var(--primary-accent);
+            line-height: 1;
+        }
+        .locked-card h3 {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .locked-card p {
+            max-width: 100%;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+        .locked-card::before { /* Animated scanlines effect */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, rgba(255, 0, 0, 0.08) 1px, transparent 1px);
+            background-size: 100% 4px;
+            animation: scanlines 12s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes scanlines {
+            from { background-position: 0 0; }
+            to { background-position: 0 100px; }
+        }
+
+
         /* --- INTERACTIVE EXPANDING CARDS --- */
         .expanding-card-container { display: flex; gap: 20px; width: 100%; min-height: 350px; }
         .expanding-card { background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px) saturate(120%); -webkit-backdrop-filter: blur(15px) saturate(120%); border: 1px solid var(--border-color); border-radius: 8px; padding: 30px; position: relative; overflow: hidden; transition: flex 0.7s cubic-bezier(0.61, 0, 0.3, 1); flex: 1; }
@@ -93,15 +169,82 @@
         .phase-text-block h3 { color: var(--primary-accent); }
         .phase-text-block p { color: var(--text-secondary); max-width: 400px; }
 
-        /* --- RESPONSIVE TABLES --- */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
-        th { color: var(--primary-accent); text-transform: uppercase; }
-        tr { transition: all 0.3s ease-out; }
-        td { color: var(--text-secondary); }
-        td strong { color: var(--text-primary); }
-        tr:hover { background: rgba(255, 0, 0, 0.1); transform: scale(1.02); border-color: var(--primary-accent); box-shadow: 0 0 15px rgba(255, 0, 0, 0.3); z-index: 2; position: relative; }
-        tr:hover td { color: var(--text-primary); }
+        /* --- NODE TIMELINE DESIGN --- */
+        .timeline-container {
+            position: relative;
+            max-width: 800px;
+            margin: 50px auto;
+        }
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background-color: var(--border-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1.5px;
+            box-shadow: 0 0 10px var(--primary-accent);
+        }
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+        }
+        .timeline-item::after { /* The node circle */
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--bg);
+            border: 4px solid var(--primary-accent);
+            top: 25px;
+            border-radius: 50%;
+            z-index: 1;
+            box-shadow: 0 0 15px var(--primary-accent);
+        }
+        .timeline-item.left {
+            left: 0;
+        }
+        .timeline-item.right {
+            left: 50%;
+        }
+        .timeline-item.right::after {
+            left: -10px;
+        }
+        .timeline-content {
+            padding: 20px 30px;
+            background: rgba(10, 10, 10, 0.5);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border-color);
+            position: relative;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .timeline-content:hover {
+            transform: scale(1.03);
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
+        }
+        .timeline-content h3 {
+            color: var(--primary-accent);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        .timeline-content .time {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .timeline-content p {
+            font-size: 0.9rem;
+            max-width: 100%;
+        }
+
 
         /* --- FOOTER & COUNTDOWN --- */
         footer { text-align: center; border-top: 1px solid var(--border-color); background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1; }
@@ -268,8 +411,28 @@
         }
 
         @media (max-width: 768px) {
+            body { padding-top: 60px; } /* Adjust padding for taller mobile timer bar */
+            #top-timer-bar { flex-direction: column; gap: 5px; padding: 8px 0; }
+            header.main-header { top: 60px; } /* Adjust header top for taller mobile timer bar */
+
             .container { padding: 80px 15px; }
             p, li { text-align: left; margin: 0 auto; max-width: 100%; }
+
+            /* --- Mobile Timeline --- */
+            .timeline-container::after {
+                left: 15px;
+            }
+            .timeline-item {
+                width: 100%;
+                padding-left: 50px;
+                padding-right: 15px;
+            }
+            .timeline-item.right {
+                left: 0%;
+            }
+            .timeline-item::after {
+                left: 6px;
+            }
 
             /* --- Mobile Navigation --- */
             header.main-header.nav-open .logo { color: var(--primary-accent); }
@@ -318,25 +481,17 @@
             .grid { grid-template-columns: 1fr; }
             .footer-quote { max-width: 100%; }
 
-            /* --- Responsive Table --- */
-            table, thead, tbody, th, td, tr { display: block; }
-            thead tr { position: absolute; top: -9999px; left: -9999px; }
-            tr { border: 1px solid var(--border-color); margin-bottom: 15px; }
-            tr:hover { transform: scale(1.01); }
-            td { border: none; border-bottom: 1px solid #333; position: relative; padding-left: 50%; text-align: right; }
-            td:last-child { border-bottom: none; }
-            td:before {
-                position: absolute; top: 50%; transform: translateY(-50%);
-                left: 15px; width: 45%;
-                padding-right: 10px; white-space: nowrap;
-                text-align: left; content: attr(data-label);
-                color: var(--primary-accent); font-weight: bold;
-                text-transform: uppercase;
-            }
         }
     </style>
 </head>
 <body>
+
+<div id="top-timer-bar">
+    <span>Submission closing today! Time Left:</span>
+    <div id="top-timer-countdown">
+        <span id="top-hours">00</span>H : <span id="top-minutes">00</span>M : <span id="top-seconds">00</span>S
+    </div>
+</div>
 
 <div id="galaxy-video-bg">
     <video autoplay muted loop playsinline>
@@ -354,6 +509,7 @@
         <a href="#teams">Teams</a>
         <a href="#phases">Phases</a>
         <a href="#schedule">Timeline</a>
+        <a href="#problem">Problem</a>
         <a href="#faqs">FAQs</a>
     </nav>
     <button class="hamburger-menu" aria-label="Open navigation menu">
@@ -441,23 +597,71 @@
     <section id="schedule" class="container">
         <h2 class="fade-in">Event Flow & Timeline</h2>
         <p class="section-subtitle fade-in">Phase Two Schedule: Stay synchronized. Total duration is approximately 4 hours.</p>
-        <div class="fade-in">
-            <table>
-                <thead>
-                <tr><th>Time</th><th>Activity</th><th>Notes</th></tr>
-                </thead>
-                <tbody>
-                <tr><td data-label="Time"><strong>0:00 – 0:20</strong></td><td data-label="Activity">Registration & Welcome</td><td data-label="Notes">Team check-in, stickers, briefing</td></tr>
-                <tr><td data-label="Time"><strong>0:20 – 0:50</strong></td><td data-label="Activity">Icebreaker / Team Warm-up</td><td data-label="Notes">Fun games and challenges</td></tr>
-                <tr><td data-label="Time"><strong>0:50 – 1:00</strong></td><td data-label="Activity">Rules & Guidelines</td><td data-label="Notes">Categories + format explained</td></tr>
-                <tr><td data-label="Time"><strong>1:00 – 4:00</strong></td><td data-label="Activity">Coding / Hacking Session</td><td data-label="Notes">3-hour hackathon sprint</td></tr>
-                <tr><td data-label="Time"><strong>4:00 – 4:30</strong></td><td data-label="Activity">Submission & Demo Prep</td><td data-label="Notes">Final touches</td></tr>
-                <tr><td data-label="Time"><strong>4:30 – 5:00</strong></td><td data-label="Activity">Demos & Judging</td><td data-label="Notes">Quick presentations + feedback</td></tr>
-                <tr><td data-label="Time"><strong>5:00</strong></td><td data-label="Activity">Closing Remarks</td><td data-label="Notes">Certificates + group photo</td></tr>
-                </tbody>
-            </table>
+        <div class="timeline-container fade-in">
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <span class="time">0:00 – 0:20</span>
+                    <h3>Registration & Welcome</h3>
+                    <p>Team check-in, stickers, briefing</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <span class="time">0:20 – 0:50</span>
+                    <h3>Icebreaker / Team Warm-up</h3>
+                    <p>Fun games and challenges</p>
+                </div>
+            </div>
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <span class="time">0:50 – 1:00</span>
+                    <h3>Rules & Guidelines</h3>
+                    <p>Categories + format explained</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <span class="time">1:00 – 4:00</span>
+                    <h3>Coding / Hacking Session</h3>
+                    <p>3-hour hackathon sprint</p>
+                </div>
+            </div>
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <span class="time">4:00 – 4:30</span>
+                    <h3>Submission & Demo Prep</h3>
+                    <p>Final touches</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <span class="time">4:30 – 5:00</span>
+                    <h3>Demos & Judging</h3>
+                    <p>Quick presentations + feedback</p>
+                </div>
+            </div>
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <span class="time">5:00</span>
+                    <h3>Closing Remarks</h3>
+                    <p>Certificates + group photo</p>
+                </div>
+            </div>
         </div>
     </section>
+
+    <section id="problem" class="container">
+        <h2 class="fade-in">Problem Statements</h2>
+        <p class="section-subtitle fade-in">Access protocols engaged. Awaiting clearance...</p>
+        <div class="fade-in">
+            <div class="card locked-card">
+                <div class="lock-icon">🔒</div>
+                <h3>ACCESS RESTRICTED</h3>
+                <p>Revealed on 19th September</p>
+            </div>
+        </div>
+    </section>
+
 
     <section id="categories" class="container">
         <h2 class="fade-in">Challenge Categories</h2>
@@ -468,6 +672,7 @@
             <div class="card"><h3>Innovation & Productivity</h3></div>
             <div class="card"><h3>Education & Learning</h3></div>
             <div class="card"><h3>Fun & Lifestyle</h3></div>
+            <div class="card"><h3>Surprise Category</h3></div>
         </div>
     </section>
 
@@ -480,39 +685,19 @@
             </details>
             <details class="accordion-item">
                 <summary>2. What are the key dates for the event?</summary>
-                <p>The online submission deadline for Phase One is <strong>Tuesday, September 16, at 12:00 AM</strong>. Selected teams will be revealed later that day. The on-campus event (Phase Two) is on Wednesday, September 17. The date for Phase Three will be announced on the 19th.</p>
+                <p>The online submission deadline for Phase One is <strong>Tuesday, September 16 </strong>. Selected teams will be revealed later that day. The on-campus event (Phase Two) is on Wednesday, September 17. The date for Phase Three will be announced on the 19th.</p>
             </details>
             <details class="accordion-item">
                 <summary>3. Where will the on-campus event be held?</summary>
                 <p>The on-campus phases will take place at Amity University Patna.</p>
             </details>
             <details class="accordion-item">
-                <summary>4. Are all participants guaranteed a certificate?</summary>
-                <p>Yes, every participant who completes the event will receive a Certificate of Participation.</p>
+                <summary>4. Is this event only for Amity University students?</summary>
+                <p>Yes, this is an internal hackathon exclusively for students of Amity University Patna (AIIT department).</p>
             </details>
             <details class="accordion-item">
-                <summary>5. Is this event only for Amity University students?</summary>
-                <p>Yes, this is an internal hackathon exclusively for students of Amity University Patna.</p>
-            </details>
-            <details class="accordion-item">
-                <summary>6. What if I don't have a team?</summary>
+                <summary>5. What if I don't have a team?</summary>
                 <p>You can participate individually. We also encourage you to connect with others during the warm-up session to form a team.</p>
-            </details>
-            <details class="accordion-item">
-                <summary>7. What will the problem statements be about?</summary>
-                <p>The problem statements will be revealed on the day of the event and will cover a variety of different categories.</p>
-            </details>
-            <details class="accordion-item">
-                <summary>8. Do we need to bring our own laptops?</summary>
-                <p>Yes, all participants must bring their own laptops with the necessary software and tools pre-installed.</p>
-            </details>
-            <details class="accordion-item">
-                <summary>9. How will the projects be judged?</summary>
-                <p>Projects will be judged based on several criteria, including innovation, technical implementation, and presentation.</p>
-            </details>
-            <details class="accordion-item">
-                <summary>10. What are the criteria for participation?</summary>
-                <p>This event is only for AIIT department students.</p>
             </details>
         </div>
     </section>
@@ -547,262 +732,6 @@
             <canvas id="confettiCanvas" style="position:relative; width:100%; height:120px; margin-top:10px;"></canvas>
         </div>
     </section>
-
-    <style>
-        /* Scoped styles for scrambler */
-        #code-scrambler .tokens .token {
-            display:inline-block;
-            padding:10px 12px;
-            border-radius:6px;
-            background: rgba(255,255,255,0.04);
-            color:var(--text-primary);
-            font-family: var(--font-main);
-            cursor:grab;
-            user-select:none;
-            border:1px solid rgba(255,255,255,0.04);
-            box-shadow: 0 0 10px rgba(255,0,0,0.03);
-            transition: transform 0.18s ease, box-shadow 0.18s ease;
-        }
-        #code-scrambler .tokens .token.dragging {
-            opacity:0.85;
-            transform: scale(1.05);
-            cursor:grabbing;
-            box-shadow: 0 8px 30px rgba(255,0,0,0.18);
-        }
-        #code-scrambler .tokens .token.drop-target {
-            outline: 2px dashed var(--primary-accent);
-        }
-        #code-scrambler .magnetic-button {
-            padding:8px 12px;
-            font-size:0.9rem;
-            border-radius:6px;
-            background:transparent;
-            color:var(--text-primary);
-            border:1px solid var(--border-color);
-            transition: all 0.18s ease;
-        }
-        #code-scrambler .magnetic-button:hover { transform: translateY(-4px); border-color:var(--primary-accent); box-shadow: 0 6px 20px rgba(255,0,0,0.12); color:var(--primary-accent); background: rgba(255,0,0,0.02); }
-        /* correct/incorrect states */
-        #code-scrambler.correct .tokens { border-color: rgba(0,200,100,0.25); box-shadow: 0 0 30px rgba(0,200,100,0.06); }
-        #code-scrambler.incorrect .tokens { animation: shake 0.4s; border-color: rgba(200,0,0,0.2); }
-        @keyframes shake {
-            0% { transform: translateX(0); } 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-4px);} 100% { transform: translateX(0); }
-        }
-    </style>
-
-    <script>
-        (function() {
-            // puzzles: {code: correct string, hint: string}
-            const puzzles = [
-                { code: "git commit -m \"initial commit\"", hint: "Common first commit message (git)." },
-                { code: "console.log('glitch initiated')", hint: "Browser console log." },
-                { code: "docker run -it --rm ubuntu bash", hint: "Run Ubuntu interactively in Docker." },
-                { code: "npm init -y && npm install express", hint: "Quick project setup + install express." },
-                { code: "fetch('/api/submit',{method:'POST',body:payload})", hint: "Simple fetch POST call." }
-            ];
-
-            // state
-            let index = 0;
-            let startTime = null;
-            let timerInterval = null;
-
-            const puzzleIndexEl = document.getElementById('puzzle-index');
-            const puzzleCountEl = document.getElementById('puzzle-count');
-            const tokensEl = document.getElementById('tokens');
-            const hintBox = document.getElementById('hintBox');
-            const feedback = document.getElementById('feedback');
-            const timerEl = document.getElementById('timer');
-            const confettiCanvas = document.getElementById('confettiCanvas');
-
-            puzzleCountEl.textContent = puzzles.length;
-
-            function startTimer() {
-                startTime = Date.now();
-                if (timerInterval) clearInterval(timerInterval);
-                timerInterval = setInterval(() => {
-                    const diff = Math.floor((Date.now() - startTime)/1000);
-                    const mm = String(Math.floor(diff/60)).padStart(2,'0');
-                    const ss = String(diff%60).padStart(2,'0');
-                    timerEl.textContent = mm + ':' + ss;
-                }, 500);
-            }
-
-            // split into tokens (preserve punctuation as part of tokens)
-            function tokenize(str) {
-                // split by spaces but keep quotes or symbols attached
-                return str.trim().split(/\s+/);
-            }
-
-            function shuffleArray(a) {
-                for (let i = a.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [a[i], a[j]] = [a[j], a[i]];
-                }
-            }
-
-            function renderPuzzle() {
-                const p = puzzles[index];
-                puzzleIndexEl.textContent = index + 1;
-                hintBox.textContent = '';
-                feedback.textContent = '';
-                document.getElementById('code-scrambler').classList.remove('correct','incorrect');
-
-                const tokens = tokenize(p.code);
-                shuffleArray(tokens);
-                tokensEl.innerHTML = '';
-
-                tokens.forEach((t, i) => {
-                    const span = document.createElement('span');
-                    span.className = 'token';
-                    span.setAttribute('draggable','true');
-                    span.setAttribute('data-pos', i);
-                    span.textContent = t;
-                    tokensEl.appendChild(span);
-                });
-
-                attachDragHandlers();
-                startTimer();
-            }
-
-            function attachDragHandlers() {
-                let dragEl = null;
-                let dragIndex = null;
-
-                tokensEl.querySelectorAll('.token').forEach((token, idx) => {
-                    token.addEventListener('dragstart', (e) => {
-                        dragEl = token;
-                        dragIndex = Array.from(tokensEl.children).indexOf(token);
-                        token.classList.add('dragging');
-                        e.dataTransfer.effectAllowed = 'move';
-                        // set text for firefox
-                        e.dataTransfer.setData('text/plain', token.textContent);
-                    });
-                    token.addEventListener('dragend', () => {
-                        token.classList.remove('dragging');
-                        tokensEl.querySelectorAll('.token').forEach(t => t.classList.remove('drop-target'));
-                    });
-
-                    token.addEventListener('dragover', (e) => {
-                        e.preventDefault();
-                        e.dataTransfer.dropEffect = 'move';
-                        token.classList.add('drop-target');
-                    });
-
-                    token.addEventListener('dragleave', () => {
-                        token.classList.remove('drop-target');
-                    });
-
-                    token.addEventListener('drop', (e) => {
-                        e.preventDefault();
-                        token.classList.remove('drop-target');
-                        if (!dragEl || dragEl === token) return;
-                        const toIndex = Array.from(tokensEl.children).indexOf(token);
-                        const fromIndex = Array.from(tokensEl.children).indexOf(dragEl);
-
-                        if (fromIndex < toIndex) {
-                            tokensEl.insertBefore(dragEl, token.nextSibling);
-                        } else {
-                            tokensEl.insertBefore(dragEl, token);
-                        }
-                    });
-                });
-            }
-
-            function getCurrentAnswer() {
-                // join by single space
-                return Array.from(tokensEl.children).map(n => n.textContent).join(' ');
-            }
-
-            function checkAnswer() {
-                const expected = puzzles[index].code.trim();
-                const current = getCurrentAnswer().trim();
-                if (current === expected) {
-                    showCorrect();
-                } else {
-                    showIncorrect();
-                }
-            }
-
-            function showCorrect() {
-                document.getElementById('code-scrambler').classList.add('correct');
-                feedback.style.color = '#8ef59b';
-                feedback.textContent = 'Correct — good job!';
-                runConfetti();
-            }
-
-            function showIncorrect() {
-                document.getElementById('code-scrambler').classList.add('incorrect');
-                feedback.style.color = 'var(--primary-accent)';
-                feedback.textContent = 'Not quite — try again.';
-                // small shake handled by CSS
-            }
-
-            // Buttons
-            document.getElementById('shuffleBtn').addEventListener('click', () => {
-                renderPuzzle();
-            });
-
-            document.getElementById('hintBtn').addEventListener('click', () => {
-                hintBox.textContent = puzzles[index].hint || 'No hint available.';
-            });
-
-            document.getElementById('checkBtn').addEventListener('click', () => {
-                checkAnswer();
-            });
-
-            document.getElementById('nextBtn').addEventListener('click', () => {
-                index = (index + 1) % puzzles.length;
-                renderPuzzle();
-            });
-
-            // small confetti: very light implementation
-            function runConfetti() {
-                const canvas = confettiCanvas;
-                const ctx = canvas.getContext('2d');
-                const DPR = window.devicePixelRatio || 1;
-                canvas.width = canvas.offsetWidth * DPR;
-                canvas.height = canvas.offsetHeight * DPR;
-                ctx.scale(DPR, DPR);
-
-                const pieces = [];
-                for (let i = 0; i < 30; i++) {
-                    pieces.push({
-                        x: canvas.offsetWidth * Math.random(),
-                        y: canvas.offsetHeight * -0.2,
-                        w: 6 + Math.random() * 8,
-                        h: 6 + Math.random() * 8,
-                        vx: (Math.random() - 0.5) * 3,
-                        vy: 1 + Math.random() * 3,
-                        r: Math.random() * 360,
-                        color: ['#ff4d4d','#ffb86b','#fff56b','#7ef59b','#8be7ff'][Math.floor(Math.random()*5)]
-                    });
-                }
-
-                let frames = 0;
-                function frame() {
-                    frames++;
-                    ctx.clearRect(0,0,canvas.width,canvas.height);
-                    pieces.forEach(p => {
-                        p.x += p.vx;
-                        p.y += p.vy;
-                        p.r += 6;
-                        ctx.save();
-                        ctx.translate(p.x, p.y);
-                        ctx.rotate(p.r * Math.PI / 180);
-                        ctx.fillStyle = p.color;
-                        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-                        ctx.restore();
-                    });
-                    if (frames < 60) requestAnimationFrame(frame);
-                    else ctx.clearRect(0,0,canvas.width,canvas.height);
-                }
-                requestAnimationFrame(frame);
-            }
-
-            // init
-            renderPuzzle();
-        })();
-    </script>
 </main>
 
 <footer id="footer">
@@ -820,31 +749,166 @@
             <p><strong>Organized by: Techpreneur Club, Amity institute of Information and Technology, Amity University Patna</strong></p>
         </div>
         <p class="webpage-credit">
-            Webpage by <a href="https://www.linkedin.com/in/hariom-sharnam" target="_blank" rel="noopener noreferrer">Hariom Sharnam</a> & <a href="https://www.linkedin.com/in/onlywith-ashwin/" target="_blank" rel="noopener noreferrer">Ashwin Mehta</a>
+            Website by - <a href="https://www.linkedin.com/in/hariom-sharnam" target="_blank" rel="noopener noreferrer">HARIOM SHARNAM</a> | Deployed by - <a href="https://www.linkedin.com/in/onlywith-ashwin/" target="_blank" rel="noopener noreferrer">ASHWIN MEHTA</a>
         </p>
     </div>
 </footer>
 
 <script>
+    (function() {
+        const puzzles = [
+            { code: "git commit -m \"initial commit\"", hint: "Common first commit message (git)." },
+            { code: "console.log('glitch initiated')", hint: "Browser console log." },
+            { code: "docker run -it --rm ubuntu bash", hint: "Run Ubuntu interactively in Docker." },
+            { code: "npm init -y && npm install express", hint: "Quick project setup + install express." },
+            { code: "fetch('/api/submit',{method:'POST',body:payload})", hint: "Simple fetch POST call." }
+        ];
+        let index = 0;
+        let startTime = null;
+        let timerInterval = null;
+        const puzzleIndexEl = document.getElementById('puzzle-index');
+        const puzzleCountEl = document.getElementById('puzzle-count');
+        const tokensEl = document.getElementById('tokens');
+        const hintBox = document.getElementById('hintBox');
+        const feedback = document.getElementById('feedback');
+        const timerEl = document.getElementById('timer');
+        const confettiCanvas = document.getElementById('confettiCanvas');
+        puzzleCountEl.textContent = puzzles.length;
+        function startTimer() {
+            startTime = Date.now();
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                const diff = Math.floor((Date.now() - startTime)/1000);
+                const mm = String(Math.floor(diff/60)).padStart(2,'0');
+                const ss = String(diff%60).padStart(2,'0');
+                timerEl.textContent = mm + ':' + ss;
+            }, 500);
+        }
+        function tokenize(str) { return str.trim().split(/\s+/); }
+        function shuffleArray(a) {
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+        }
+        function renderPuzzle() {
+            const p = puzzles[index];
+            puzzleIndexEl.textContent = index + 1;
+            hintBox.textContent = '';
+            feedback.textContent = '';
+            document.getElementById('code-scrambler').classList.remove('correct','incorrect');
+            const tokens = tokenize(p.code);
+            shuffleArray(tokens);
+            tokensEl.innerHTML = '';
+            tokens.forEach((t, i) => {
+                const span = document.createElement('span');
+                span.className = 'token';
+                span.setAttribute('draggable','true');
+                span.setAttribute('data-pos', i);
+                span.textContent = t;
+                tokensEl.appendChild(span);
+            });
+            attachDragHandlers();
+            startTimer();
+        }
+        function attachDragHandlers() {
+            let dragEl = null;
+            tokensEl.querySelectorAll('.token').forEach((token) => {
+                token.addEventListener('dragstart', (e) => {
+                    dragEl = token;
+                    token.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/plain', token.textContent);
+                });
+                token.addEventListener('dragend', () => {
+                    token.classList.remove('dragging');
+                    tokensEl.querySelectorAll('.token').forEach(t => t.classList.remove('drop-target'));
+                });
+                token.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    token.classList.add('drop-target');
+                });
+                token.addEventListener('dragleave', () => { token.classList.remove('drop-target'); });
+                token.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    token.classList.remove('drop-target');
+                    if (!dragEl || dragEl === token) return;
+                    const fromIndex = Array.from(tokensEl.children).indexOf(dragEl);
+                    const toIndex = Array.from(tokensEl.children).indexOf(token);
+                    if (fromIndex < toIndex) { tokensEl.insertBefore(dragEl, token.nextSibling); }
+                    else { tokensEl.insertBefore(dragEl, token); }
+                });
+            });
+        }
+        function getCurrentAnswer() { return Array.from(tokensEl.children).map(n => n.textContent).join(' '); }
+        function checkAnswer() {
+            const expected = puzzles[index].code.trim();
+            const current = getCurrentAnswer().trim();
+            if (current === expected) { showCorrect(); } else { showIncorrect(); }
+        }
+        function showCorrect() {
+            document.getElementById('code-scrambler').classList.add('correct');
+            feedback.style.color = '#8ef59b';
+            feedback.textContent = 'Correct — good job!';
+            runConfetti();
+        }
+        function showIncorrect() {
+            document.getElementById('code-scrambler').classList.add('incorrect');
+            feedback.style.color = 'var(--primary-accent)';
+            feedback.textContent = 'Not quite — try again.';
+        }
+        document.getElementById('shuffleBtn').addEventListener('click', () => { renderPuzzle(); });
+        document.getElementById('hintBtn').addEventListener('click', () => { hintBox.textContent = puzzles[index].hint || 'No hint available.'; });
+        document.getElementById('checkBtn').addEventListener('click', () => { checkAnswer(); });
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            index = (index + 1) % puzzles.length;
+            renderPuzzle();
+        });
+        function runConfetti() {
+            const canvas = confettiCanvas;
+            const ctx = canvas.getContext('2d');
+            const DPR = window.devicePixelRatio || 1;
+            canvas.width = canvas.offsetWidth * DPR;
+            canvas.height = canvas.offsetHeight * DPR;
+            ctx.scale(DPR, DPR);
+            const pieces = [];
+            for (let i = 0; i < 30; i++) {
+                pieces.push({
+                    x: canvas.offsetWidth * Math.random(), y: canvas.offsetHeight * -0.2, w: 6 + Math.random() * 8, h: 6 + Math.random() * 8,
+                    vx: (Math.random() - 0.5) * 3, vy: 1 + Math.random() * 3, r: Math.random() * 360,
+                    color: ['#ff4d4d','#ffb86b','#fff56b','#7ef59b','#8be7ff'][Math.floor(Math.random()*5)]
+                });
+            }
+            let frames = 0;
+            function frame() {
+                frames++;
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                pieces.forEach(p => {
+                    p.x += p.vx; p.y += p.vy; p.r += 6;
+                    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r * Math.PI / 180);
+                    ctx.fillStyle = p.color; ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
+                });
+                if (frames < 60) requestAnimationFrame(frame);
+                else ctx.clearRect(0,0,canvas.width,canvas.height);
+            }
+            requestAnimationFrame(frame);
+        }
+        renderPuzzle();
+    })();
+</script>
+
+<script>
     document.addEventListener('DOMContentLoaded', function() {
 
-        // --- MOBILE NAVIGATION ---
         const hamburger = document.querySelector('.hamburger-menu');
         const header = document.querySelector('.main-header');
         const navLinks = document.querySelectorAll('#main-nav a');
-
-        hamburger.addEventListener('click', () => {
-            header.classList.toggle('nav-open');
-        });
-
-        // Close nav when a link is clicked
+        hamburger.addEventListener('click', () => { header.classList.toggle('nav-open'); });
         navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                header.classList.remove('nav-open');
-            });
+            link.addEventListener('click', () => { header.classList.remove('nav-open'); });
         });
 
-        // --- CUSTOM CURSOR ---
         const cursor = document.getElementById('cursor');
         const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         if (!isTouchDevice()) {
@@ -852,7 +916,7 @@
             window.addEventListener('mousemove', e => {
                 gsap.to(cursor, { duration: 0.3, x: e.clientX, y: e.clientY, ease: 'power2.out' });
             });
-            const hoverables = document.querySelectorAll('a, button, .card, tr, .expanding-card');
+            const hoverables = document.querySelectorAll('a, button, .card, tr, .expanding-card, .token, summary, .timeline-content');
             hoverables.forEach(el => {
                 el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
                 el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
@@ -861,7 +925,6 @@
             if(cursor) cursor.style.display = 'none';
         }
 
-        // --- MAGNETIC BUTTONS ---
         if (!isTouchDevice()) {
             const magneticButtons = document.querySelectorAll('.magnetic-button');
             magneticButtons.forEach(button => {
@@ -877,7 +940,6 @@
             });
         }
 
-        // --- SCROLL-TRIGGERED FADE-IN ANIMATIONS ---
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -888,63 +950,57 @@
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-        // --- COUNTDOWN TIMER ---
-        const countdown = () => {
+        const setupCountdown = () => {
             const countToDate = new Date("2025-09-16T00:00:00").getTime();
-            const now = new Date().getTime();
-            const difference = countToDate - now;
-
-            if (document.getElementById('days')) {
+            const updateTimers = () => {
+                const now = new Date().getTime();
+                const difference = countToDate - now;
                 if (difference < 0) {
                     clearInterval(countdownInterval);
-                    document.getElementById('countdown-timer').innerHTML = "<h3>Submissions Closed!</h3>";
+                    if (document.getElementById('countdown-timer')) {
+                        document.getElementById('countdown-timer').innerHTML = "<h3>Submissions Closed!</h3>";
+                    }
+                    if (document.getElementById('top-timer-bar')) {
+                        document.getElementById('top-timer-bar').innerHTML = "<strong>Submissions have closed!</strong>";
+                    }
                     return;
                 }
                 const d = Math.floor(difference / (1000 * 60 * 60 * 24));
                 const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
                 const s = Math.floor((difference % (1000 * 60)) / 1000);
-                document.getElementById('days').innerText = d < 10 ? '0' + d : d;
-                document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
-                document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
-                document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
-            }
+                if (document.getElementById('days')) {
+                    document.getElementById('days').innerText = d < 10 ? '0' + d : d;
+                    document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
+                    document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
+                    document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
+                }
+                if (document.getElementById('top-hours')) {
+                    document.getElementById('top-hours').innerText = h < 10 ? '0' + h : h;
+                    document.getElementById('top-minutes').innerText = m < 10 ? '0' + m : m;
+                    document.getElementById('top-seconds').innerText = s < 10 ? '0' + s : s;
+                }
+            };
+            const countdownInterval = setInterval(updateTimers, 1000);
+            updateTimers();
         };
-        const countdownInterval = setInterval(countdown, 1000);
-        countdown();
+        setupCountdown();
 
-        // --- CINEMATIC PHASES SCROLL ---
-        // Only run this complex animation on larger screens
         if (window.innerWidth > 1024) {
             const stickyContainer = document.querySelector('.sticky-container');
             if (stickyContainer) {
                 const phaseNumbers = document.querySelectorAll('.phase-number');
                 const phaseTextBlocks = document.querySelectorAll('.phase-text-block');
-
-                // Initial setup
-                phaseNumbers.forEach((num, index) => {
-                    num.style.opacity = index === 0 ? '1' : '0.05';
-                });
-                phaseTextBlocks.forEach((text, index) => {
-                    text.style.opacity = index === 0 ? '1' : '0.3';
-                });
-
+                phaseNumbers.forEach((num, index) => { num.style.opacity = index === 0 ? '1' : '0.05'; });
+                phaseTextBlocks.forEach((text, index) => { text.style.opacity = index === 0 ? '1' : '0.3'; });
                 window.addEventListener('scroll', () => {
                     const rect = stickyContainer.getBoundingClientRect();
                     if (rect.top <= 0 && rect.bottom >= window.innerHeight) {
                         const scrollPercent = -rect.top / (rect.height - window.innerHeight);
-
                         let activePhase = Math.floor(scrollPercent * phaseNumbers.length);
-                        if (activePhase >= phaseNumbers.length) {
-                            activePhase = phaseNumbers.length - 1;
-                        }
-
-                        phaseNumbers.forEach((num, index) => {
-                            num.style.opacity = index === activePhase ? '1' : '0.05';
-                        });
-                        phaseTextBlocks.forEach((text, index) => {
-                            text.style.opacity = index === activePhase ? '1' : '0.3';
-                        });
+                        if (activePhase >= phaseNumbers.length) { activePhase = phaseNumbers.length - 1; }
+                        phaseNumbers.forEach((num, index) => { num.style.opacity = index === activePhase ? '1' : '0.05'; });
+                        phaseTextBlocks.forEach((text, index) => { text.style.opacity = index === activePhase ? '1' : '0.3'; });
                     }
                 });
             }
