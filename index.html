@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glitch 1.0 | Analysis in Progress</title>
+    <title>Glitch 1.0 | System Recalibrated</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
@@ -81,6 +81,28 @@
         .hero-title:hover::after { left: -3px; text-shadow: 3px 0 #00ffff, -2px -2px var(--primary-accent); animation: text-glitch-2 1s infinite linear alternate-reverse; }
         .hero-title::before, .hero-title::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; color: var(--text-primary); }
 
+        /* --- [NEW] ANNOUNCEMENT SECTION --- */
+        #announcement { padding: 80px 20px; text-align: center; }
+        .alert-box {
+            max-width: 800px; margin: 0 auto;
+            border: 2px solid var(--primary-accent); border-radius: 8px;
+            padding: 30px 40px;
+            background: rgba(30, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 35px rgba(255, 0, 0, 0.4);
+            animation: pulse-border 3s infinite;
+        }
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.3); }
+            50% { box-shadow: 0 0 50px rgba(255, 0, 0, 0.7); }
+            100% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.3); }
+        }
+        .alert-box h3 { color: var(--primary-accent); margin-bottom: 20px; font-size: clamp(1.5rem, 4vw, 2rem); }
+        .alert-box p { max-width: 100%; margin-bottom: 20px; }
+        .alert-box ul { padding-left: 0; max-width: 400px; margin: 0 auto; text-align: left;}
+        .alert-box li { padding-left: 25px; }
+        .alert-box li::before { content: '»'; }
+
         /* --- MAGNETIC CTA BUTTON --- */
         .magnetic-button { display: inline-block; position: relative; background-color: var(--primary-accent); color: var(--bg); padding: 16px 40px; border-radius: 5px; text-decoration: none; font-weight: 700; text-transform: uppercase; margin-top: 40px; transition: transform 0.3s cubic-bezier(0.2, 1, 0.8, 1), background-color 0.2s; z-index: 2; border: none; font-family: var(--font-main); }
         .magnetic-button:hover { background-color: #ffffff; color: var(--primary-accent); box-shadow: 0 0 20px #ffffff; }
@@ -95,29 +117,15 @@
         .card:hover::after { top: 100%; }
 
         /* --- PROCESSING/LOCKED CARD --- */
-        .processing-card {
-            text-align: center;
-            border-color: var(--primary-accent);
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.2);
-        }
-        .processing-card .icon {
-            font-size: 3rem;
-            color: var(--primary-accent);
-            text-shadow: 0 0 15px var(--primary-accent);
-            line-height: 1;
-        }
+        .processing-card { text-align: center; border-color: var(--primary-accent); box-shadow: 0 0 25px rgba(255, 0, 0, 0.2); }
+        .processing-card .icon { font-size: 3rem; color: var(--primary-accent); text-shadow: 0 0 15px var(--primary-accent); line-height: 1; }
         .processing-card .icon.spin { animation: spin 4s linear infinite; }
-        .processing-card h3 {
-            margin-top: 15px; margin-bottom: 10px; letter-spacing: 2px;
-        }
+        .processing-card h3 { margin-top: 15px; margin-bottom: 10px; letter-spacing: 2px; }
         .processing-card p { max-width: 100%; font-size: 1.1rem; color: var(--text-primary); }
         .processing-card::before { /* Animated scanlines effect */
-            content: ''; position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(0deg, rgba(255, 0, 0, 0.08) 1px, transparent 1px);
-            background-size: 100% 4px;
-            animation: scanlines 12s linear infinite;
-            pointer-events: none;
+            background-size: 100% 4px; animation: scanlines 12s linear infinite; pointer-events: none;
         }
         @keyframes scanlines { from { background-position: 0 0; } to { background-position: 0 100px; } }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -154,12 +162,12 @@
         .timeline-content .time { font-weight: 700; color: var(--text-primary); font-size: 1rem; margin-bottom: 10px; display: block; }
         .timeline-content p { font-size: 0.9rem; max-width: 100%; }
 
-        /* --- NEW STYLE FOR CORRUPTED TIMELINE --- */
+        /* --- [NEW] STYLE FOR CORRUPTED/DECRYPTING TIMELINE --- */
         .timeline-container.corrupted {
             filter: blur(5px) grayscale(50%);
             opacity: 0.6;
             pointer-events: none;
-            transition: all 0.5s ease-in-out;
+            transition: all 0.8s ease-in-out;
             user-select: none;
         }
 
@@ -263,7 +271,7 @@
         <a href="#about">About</a>
         <a href="#teams">Teams</a>
         <a href="#phases">Phases</a>
-        <a href="#schedule">Timeline</a>
+        <a href="#schedule">Schedule</a>
         <a href="#problem">Problem</a>
         <a href="#faqs">FAQs</a>
     </nav>
@@ -281,6 +289,17 @@
             Phase One protocol terminated. Thank you for your submissions. The mainframe is now analyzing the data streams.
         </p>
         <a href="#teams" class="magnetic-button fade-in" style="transition-delay: 0.8s;">AWAITING DIRECTIVE ></a>
+    </section>
+
+    <section id="announcement">
+        <div class="alert-box fade-in">
+            <h3>📢 PHASE 2 & 3 UPDATE</h3>
+            <p>Dear Participants, a new directive has been issued. Both <strong>Phase 2 – Vibe Coding</strong> and <strong>Phase 3 – The Mainframe</strong> will be executed on <strong>19th September 2025</strong> at Amity University Patna.</p>
+            <ul>
+                <li><strong>Phase 2:</strong> 3-hour Vibe Coding session.</li>
+                <li><strong>Phase 3:</strong> 1-hour Mainframe challenge for the top 10 teams.</li>
+            </ul>
+        </div>
     </section>
 
     <section id="about" class="container">
@@ -355,55 +374,62 @@
 
     <section id="schedule" class="container">
         <h2 class="fade-in">SCHEDULE ANOMALY DETECTED</h2>
-        <p class="section-subtitle fade-in">Recalibrating event parameters... New directive incoming. Stand by for temporal realignment.</p>
+        <p class="section-subtitle fade-in" id="schedule-subtitle">Recalibrating event parameters... New directive incoming. Stand by for temporal realignment.</p>
         <div class="timeline-container fade-in corrupted">
             <div class="timeline-item left">
                 <div class="timeline-content">
-                    <span class="time">0:00 – 0:20</span>
-                    <h3>Registration & Welcome</h3>
-                    <p>Team check-in, stickers, briefing</p>
+                    <span class="time">8:00 AM</span>
+                    <h3>Reporting Time</h3>
+                    <p>Team Check-in & System Sync</p>
                 </div>
             </div>
             <div class="timeline-item right">
                 <div class="timeline-content">
-                    <span class="time">0:20 – 0:50</span>
-                    <h3>Icebreaker / Team Warm-up</h3>
-                    <p>Fun games and challenges</p>
+                    <span class="time">8:30 – 9:00 AM</span>
+                    <h3>Inauguration</h3>
+                    <p>Event Protocol Initiated</p>
                 </div>
             </div>
             <div class="timeline-item left">
                 <div class="timeline-content">
-                    <span class="time">0:50 – 1:00</span>
-                    <h3>Rules & Guidelines</h3>
-                    <p>Categories + format explained</p>
+                    <span class="time">9:00 – 9:30 AM</span>
+                    <h3>Rules & Briefing</h3>
+                    <p>Directives for all operatives</p>
                 </div>
             </div>
             <div class="timeline-item right">
                 <div class="timeline-content">
-                    <span class="time">1:00 – 4:00</span>
-                    <h3>Coding / Hacking Session</h3>
-                    <p>3-hour hackathon sprint</p>
+                    <span class="time">10:00 AM – 1:00 PM</span>
+                    <h3>Phase 2: Coding Round</h3>
+                    <p>3-hour intensive coding session</p>
                 </div>
             </div>
             <div class="timeline-item left">
                 <div class="timeline-content">
-                    <span class="time">4:00 – 4:30</span>
-                    <h3>Submission & Demo Prep</h3>
-                    <p>Final touches</p>
+                    <span class="time">1:00 – 2:00 PM</span>
+                    <h3>Judging & Evaluation</h3>
+                    <p>Mainframe analyzing submissions</p>
                 </div>
             </div>
             <div class="timeline-item right">
                 <div class="timeline-content">
-                    <span class="time">4:30 – 5:00</span>
-                    <h3>Demos & Judging</h3>
-                    <p>Quick presentations + feedback</p>
+                    <span class="time">2:00 – 2:30 PM</span>
+                    <h3>Snacks Break</h3>
+                    <p>System Recharge & Refuel</p>
                 </div>
             </div>
             <div class="timeline-item left">
                 <div class="timeline-content">
-                    <span class="time">5:00</span>
-                    <h3>Closing Remarks</h3>
-                    <p>Certificates + group photo</p>
+                    <span class="time">3:00 – 4:00 PM</span>
+                    <h3>Phase 3: Quick Changes</h3>
+                    <p>1-hour high-pressure challenge</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <span class="time">5:00 PM</span>
+                    <h3>Results & Prize Distribution</h3>
+                    <p>Victory Protocols Engaged</p>
                 </div>
             </div>
         </div>
@@ -444,7 +470,7 @@
             </details>
             <details class="accordion-item">
                 <summary>2. What are the key dates for the event?</summary>
-                <p>The online submission deadline for Phase One was <strong>Tuesday, September 16 at 3 AM</strong>. Selected teams will be revealed later today. The on-campus event (Phase Two) is on Wednesday, September 17. The date for Phase Three will be announced on the 19th.</p>
+                <p>The online submission for Phase One has closed. The main on-campus event, including both <strong>Phase Two and Phase Three</strong>, will be held on <strong>Friday, September 19th, 2025</strong>.</p>
             </details>
             <details class="accordion-item">
                 <summary>3. Where will the on-campus event be held?</summary>
@@ -487,7 +513,7 @@
 
 <footer id="footer">
     <div class="container">
-        <h2 class="fade-in">Phase Two Countdown</h2>
+        <h2 class="fade-in">Main Event Countdown</h2>
         <p class="footer-quote fade-in">“The system is rebooting. Prepare for the next challenge.”</p>
         <div id="countdown-timer" class="fade-in">
             <div class="timer-box"><span id="days">00</span><span>Days</span></div>
@@ -514,105 +540,56 @@
 
         if (!textToTypeEl || !typingInput) return;
 
-        // UPDATED with simple Python snippets
         const snippets = [
-            "print('Hello, Glitch!')",
-            "name = input('Enter your name: ')",
-            "for i in range(5):",
-            "import random",
-            "def calculate_sum(x, y):",
-            "numbers = [1, 2, 3, 4, 5]",
-            "if score > 90:",
-            "data = {'id': 101, 'status': 'active'}"
+            "print('Hello, Glitch!')", "name = input('Enter your name: ')", "for i in range(5):",
+            "import random", "def calculate_sum(x, y):", "numbers = [1, 2, 3, 4, 5]",
+            "if score > 90:", "data = {'id': 101, 'status': 'active'}"
         ];
 
-        let timer;
-        let timeRemaining = 60;
-        let gameActive = false;
-        let charTyped = 0;
-        const TIME_LIMIT = 60;
+        let timer; let timeRemaining = 60; let gameActive = false; let charTyped = 0; const TIME_LIMIT = 60;
 
         function resetGame() {
-            clearInterval(timer);
-            gameActive = false;
-            timeRemaining = TIME_LIMIT;
-            charTyped = 0;
-
+            clearInterval(timer); gameActive = false; timeRemaining = TIME_LIMIT; charTyped = 0;
             const randomSnippet = snippets[Math.floor(Math.random() * snippets.length)];
             textToTypeEl.innerHTML = '';
             randomSnippet.split('').forEach(char => {
-                const span = document.createElement('span');
-                span.innerText = char;
-                textToTypeEl.appendChild(span);
+                const span = document.createElement('span'); span.innerText = char; textToTypeEl.appendChild(span);
             });
-
-            typingInput.value = '';
-            typingInput.disabled = false;
-            typingInput.focus();
-            timerEl.textContent = timeRemaining + 's';
-            wpmEl.textContent = '0';
-            resetBtn.style.color = 'var(--text-secondary)';
+            typingInput.value = ''; typingInput.disabled = false; typingInput.focus();
+            timerEl.textContent = timeRemaining + 's'; wpmEl.textContent = '0'; resetBtn.style.color = 'var(--text-secondary)';
         }
 
         function startGame() {
-            if (gameActive) return;
-            gameActive = true;
-
+            if (gameActive) return; gameActive = true;
             timer = setInterval(() => {
-                timeRemaining--;
-                timerEl.textContent = timeRemaining + 's';
-
+                timeRemaining--; timerEl.textContent = timeRemaining + 's';
                 const timeElapsed = TIME_LIMIT - timeRemaining;
                 const wpm = timeElapsed > 0 ? Math.round((charTyped / 5) / (timeElapsed / 60)) : 0;
                 wpmEl.textContent = wpm;
-
                 if (timeRemaining <= 0) {
-                    clearInterval(timer);
-                    typingInput.disabled = true;
-                    gameActive = false;
+                    clearInterval(timer); typingInput.disabled = true; gameActive = false;
                     resetBtn.style.color = 'var(--primary-accent)';
                 }
             }, 1000);
         }
 
         typingInput.addEventListener('input', () => {
-            if (!gameActive && timeRemaining === TIME_LIMIT) {
-                startGame();
-            }
-
-            const textChars = textToTypeEl.querySelectorAll('span');
-            const inputChars = typingInput.value.split('');
-            charTyped = 0;
-            let correct = true;
-
+            if (!gameActive && timeRemaining === TIME_LIMIT) { startGame(); }
+            const textChars = textToTypeEl.querySelectorAll('span'); const inputChars = typingInput.value.split('');
+            charTyped = 0; let correct = true;
             textChars.forEach((charSpan, index) => {
                 const inputChar = inputChars[index];
-                if (inputChar == null) {
-                    charSpan.style.color = 'var(--text-secondary)';
-                    correct = false;
+                if (inputChar == null) { charSpan.style.color = 'var(--text-secondary)'; correct = false;
                 } else if (inputChar === charSpan.innerText) {
-                    charSpan.style.color = '#8ef59b'; // Green for correct
-                    if(correct) {
-                        charTyped++;
-                    }
-                } else {
-                    charSpan.style.color = 'var(--primary-accent)'; // Red for incorrect
-                    correct = false;
-                }
+                    charSpan.style.color = '#8ef59b'; if(correct) { charTyped++; }
+                } else { charSpan.style.color = 'var(--primary-accent)'; correct = false; }
             });
-
-            // Check if finished correctly
             if (inputChars.length === textChars.length && correct) {
-                clearInterval(timer);
-                gameActive = false;
-                typingInput.disabled = true;
+                clearInterval(timer); gameActive = false; typingInput.disabled = true;
                 resetBtn.style.color = 'var(--primary-accent)';
             }
         });
-
         resetBtn.addEventListener('click', resetGame);
-
-        // Initialize
         resetGame();
     })();
 </script>
@@ -620,26 +597,19 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-
         const hamburger = document.querySelector('.hamburger-menu');
         const header = document.querySelector('.main-header');
         const navLinks = document.querySelectorAll('#main-nav a');
         hamburger.addEventListener('click', () => { header.classList.toggle('nav-open'); });
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => { header.classList.remove('nav-open'); });
-        });
+        navLinks.forEach(link => { link.addEventListener('click', () => { header.classList.remove('nav-open'); }); });
 
         const cursor = document.getElementById('cursor');
         const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-        // --- CURSOR FIX ---
-        // Set the transform-origin point for GSAP animations
         gsap.set(cursor, {xPercent: -50, yPercent: -50});
 
         if (!isTouchDevice()) {
             document.body.style.cursor = 'none';
             window.addEventListener('mousemove', e => {
-                // Animate x and y properties, GSAP will now respect the transform-origin
                 gsap.to(cursor, { duration: 0.3, x: e.clientX, y: e.clientY, ease: 'power2.out' });
             });
             const hoverables = document.querySelectorAll('a, button, .card, tr, .expanding-card, .token, summary, .timeline-content, input');
@@ -647,9 +617,7 @@
                 el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
                 el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
             });
-        } else {
-            if(cursor) cursor.style.display = 'none';
-        }
+        } else { if(cursor) cursor.style.display = 'none'; }
 
         if (!isTouchDevice()) {
             const magneticButtons = document.querySelectorAll('.magnetic-button');
@@ -666,59 +634,45 @@
             });
         }
 
-        const observer = new IntersectionObserver((entries) => {
+        // --- GENERAL FADE-IN OBSERVER ---
+        const fadeInObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
+                    fadeInObserver.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        document.querySelectorAll('.fade-in').forEach(el => fadeInObserver.observe(el));
 
         const setupCountdown = () => {
-            // New countdown date for Phase Two: September 17, 2025 at 10:00 AM
             const countToDate = new Date("2025-09-19T10:00:00").getTime();
             const updateTimers = () => {
-                const now = new Date().getTime();
-                const difference = countToDate - now;
-
+                const now = new Date().getTime(); const difference = countToDate - now;
                 if (difference < 0) {
                     clearInterval(countdownInterval);
-                    const liveMessage = "<h3 style='color: var(--primary-accent);'>Phase Two is LIVE!</h3>";
+                    const liveMessage = "<h3 style='color: var(--primary-accent);'>The Event is LIVE!</h3>";
                     if (document.getElementById('countdown-timer')) document.getElementById('countdown-timer').innerHTML = liveMessage;
                     return;
                 }
-
                 const d = Math.floor(difference / (1000 * 60 * 60 * 24));
                 const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
                 const s = Math.floor((difference % (1000 * 60)) / 1000);
-
                 const format = (num) => (num < 10 ? '0' + num : num);
-
-                // Helper to update elements safely
-                const updateElement = (id, value) => {
-                    const el = document.getElementById(id);
-                    if (el) el.innerText = format(value);
-                };
-
-                // Update footer countdown timer
-                updateElement('days', d);
-                updateElement('hours', h);
-                updateElement('minutes', m);
-                updateElement('seconds', s);
+                const updateElement = (id, value) => { const el = document.getElementById(id); if (el) el.innerText = format(value); };
+                updateElement('days', d); updateElement('hours', h); updateElement('minutes', m); updateElement('seconds', s);
             };
             const countdownInterval = setInterval(updateTimers, 1000);
             updateTimers();
         };
         setupCountdown();
 
+        // --- STICKY PHASES SCROLL ---
         if (window.innerWidth > 1024) {
             const stickyContainer = document.querySelector('.sticky-container');
             if (stickyContainer) {
-                const phaseNumbers = document.querySelectorAll('.phase-number');
-                const phaseTextBlocks = document.querySelectorAll('.phase-text-block');
+                const phaseNumbers = document.querySelectorAll('.phase-number'); const phaseTextBlocks = document.querySelectorAll('.phase-text-block');
                 phaseNumbers.forEach((num, index) => { num.style.opacity = index === 0 ? '1' : '0.05'; });
                 phaseTextBlocks.forEach((text, index) => { text.style.opacity = index === 0 ? '1' : '0.3'; });
                 window.addEventListener('scroll', () => {
@@ -733,6 +687,29 @@
                 });
             }
         }
+
+        // --- [NEW] TIMELINE DECRYPTION ---
+        const timelineObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const timeline = entry.target;
+                    const subtitle = document.getElementById('schedule-subtitle');
+                    setTimeout(() => {
+                        timeline.classList.remove('corrupted');
+                        if (subtitle) {
+                            subtitle.textContent = "Temporal Realignment Complete. Schedule Locked and Verified.";
+                        }
+                    }, 1000); // 1-second delay for effect
+                    timelineObserver.unobserve(timeline); // Only run once
+                }
+            });
+        }, { threshold: 0.5 }); // Trigger when 50% of the timeline is visible
+
+        const corruptedTimeline = document.querySelector('#schedule .timeline-container.corrupted');
+        if (corruptedTimeline) {
+            timelineObserver.observe(corruptedTimeline);
+        }
+
     });
 </script>
 
