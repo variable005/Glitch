@@ -235,6 +235,8 @@
         .accordion-item summary::after { content: '+'; font-size: 1.5rem; position: absolute; right: 25px; top: 50%; transform: translateY(-50%); transition: transform 0.2s ease-in-out; color: var(--text-secondary); }
         .accordion-item[open] summary::after { content: '-'; transform: translateY(-50%) rotate(45deg); color: var(--primary-accent); }
         .accordion-item p { padding: 0 30px 20px; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; max-width: none; overflow: hidden; transition: max-height 0.3s ease-out; }
+        /* --- [NEW] Style for UL inside accordion --- */
+        .accordion-item ul { padding: 0 30px 20px 50px; color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; max-width: none; overflow: hidden; }
 
         /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 1024px) {
@@ -302,6 +304,7 @@
         <a href="#categories">Categories</a>
         <a href="#teams">Teams</a>
         <a href="#phases">Phases</a>
+        <a href="#rules">Rules</a>
         <a href="#schedule">Schedule</a>
         <a href="#sponsors">Sponsors</a>
         <a href="#faqs">FAQs</a>
@@ -490,6 +493,79 @@
         </div>
     </section>
 
+    <section id="rules" class="container">
+        <h2 class="fade-in">Phase 2: Vibe Coding Rules</h2>
+        <p class="section-subtitle fade-in">System integrity is paramount. Adherence to these protocols is mandatory for all participants.</p>
+        <div class="accordion-container fade-in">
+            <details class="accordion-item">
+                <summary>0. Reporting Time</summary>
+                <ul>
+                    <li>All participants must reach the venue by 8:00 AM (reporting time).</li>
+                    <li>Late arrival may result in disqualification.</li>
+                </ul>
+            </details>
+            <details class="accordion-item">
+                <summary>1. Team Structure</summary>
+                <ul>
+                    <li>Teams may consist of 1–2 members only.</li>
+                    <li>No changes in team members after reporting.</li>
+                </ul>
+            </details>
+            <details class="accordion-item">
+                <summary>2. Coding Environment</summary>
+                <ul>
+                    <li>Lab systems will be provided for all participants.</li>
+                    <li>Participants may also use their own laptops if they prefer.</li>
+                </ul>
+            </details>
+            <details class="accordion-item">
+                <summary>3. Shared Repository (Mandatory)</summary>
+                <ul>
+                    <li>Each team must maintain a shared GitHub repository for their project.</li>
+                    <li>The repo link must be submitted before the deadline.</li>
+                    <li>All work should be pushed to the repo during the coding round.</li>
+                </ul>
+            </details>
+            <details class="accordion-item">
+                <summary>4. Problem Statement</summary>
+                <ul>
+                    <li>The problem statement will be disclosed at the start of Phase 2.</li>
+                    <li>Participants must strictly work on the given problem only.</li>
+                </ul>
+            </details>
+            <details class="accordion-item">
+                <summary>5. Time Limit</summary>
+                <ul>
+                    <li>Total duration: 3 hours.</li>
+                    <li>Late submissions will not be considered.</li>
+                </ul>
+            </details>
+            <details class="accordion-item">
+                <summary>6. Submission</summary>
+                <ul>
+                    <li>Final code must be in the shared repo.</li>
+                    <li>Teams should ensure their project is runnable.</li>
+                    <li>A short demo may be required after submission.</li>
+                </ul>
+            </details>
+            <details class="accordion-item">
+                <summary>7. Evaluation Criteria</summary>
+                <ul>
+                    <li>Innovation & Creativity – 0–10</li>
+                    <li>Functionality & Execution – 0–10</li>
+                    <li>Code Quality & Repo Management – 0–10</li>
+                    <li>Presentation & Demo – 0–10</li>
+                </ul>
+            </details>
+            <details class="accordion-item">
+                <summary>8. Fair Play</summary>
+                <ul>
+                    <li>Plagiarism or use of pre-built projects is not allowed.</li>
+                    <li>Respect organizers, mentors, and fellow participants.</li>
+                </ul>
+            </details>
+        </div>
+    </section>
     <section id="schedule" class="container">
         <h2 class="fade-in">SCHEDULE ANOMALY DETECTED</h2>
         <p class="section-subtitle fade-in" id="schedule-subtitle">Recalibrating event parameters... New directive incoming. Stand by for temporal realignment.</p>
@@ -775,4 +851,3 @@
 
 </body>
 </html>
-
