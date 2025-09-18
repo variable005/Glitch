@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glitch 1.0 | System Recalibrated</title>
+    <title>Glitch 1.0 | Phase 2 Results</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
@@ -17,13 +17,15 @@
             --text-secondary: #AAAAAA;
             --border-color: rgba(255, 0, 0, 0.2);
             --font-main: 'Orbitron', sans-serif;
+            --font-mono: 'Courier New', monospace;
+            --text-success: #8ef59b;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
             font-family: var(--font-main); background-color: var(--bg); color: var(--text-secondary);
             line-height: 1.6; overflow-x: hidden;
-            padding-top: 50px; /* Reverted to original padding */
+            padding-top: 50px;
         }
 
         /* --- BACKGROUND & CURSOR --- */
@@ -67,12 +69,12 @@
         a, button { cursor: none; }
 
         /* --- HEADER & NAVIGATION --- */
-        header.main-header { display: flex; align-items: center; justify-content: space-between; position: absolute; top: 50px; left: 0; width: 100%; padding: 30px 5%; z-index: 10;} /* Adjusted top position */
+        header.main-header { display: flex; align-items: center; justify-content: space-between; position: absolute; top: 50px; left: 0; width: 100%; padding: 30px 5%; z-index: 10;}
         .logo { font-weight: 900; font-size: 1.5rem; letter-spacing: 1px; color: var(--text-primary); z-index: 101; }
         header nav { display: flex; gap: 30px; }
         header nav a { color: var(--text-secondary); text-decoration: none; font-weight: 700; transition: color 0.2s; }
         header nav a:hover { color: var(--text-primary); text-shadow: 0 0 5px var(--primary-accent); }
-        .hamburger-menu { display: none; } /* Hidden by default */
+        .hamburger-menu { display: none; }
 
         /* --- HERO SECTION --- */
         #hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 20px; }
@@ -81,62 +83,94 @@
         .hero-title:hover::after { left: -3px; text-shadow: 3px 0 #00ffff, -2px -2px var(--primary-accent); animation: text-glitch-2 1s infinite linear alternate-reverse; }
         .hero-title::before, .hero-title::after { content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; color: var(--text-primary); }
 
-        /* --- [NEW] ANNOUNCEMENT SECTION --- */
-        #announcement { padding: 80px 20px; text-align: center; }
-        .alert-box {
-            max-width: 800px; margin: 0 auto;
-            border: 2px solid var(--primary-accent); border-radius: 8px;
-            padding: 30px 40px;
-            background: rgba(30, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 35px rgba(255, 0, 0, 0.4);
-            animation: pulse-border 3s infinite;
+        /* --- ANNOUNCEMENT SECTION --- */
+        .announcement-box {
+            max-width: 800px; margin: 0 auto; border: 2px solid var(--primary-accent); border-radius: 8px;
+            padding: 30px 40px; background: rgba(30, 0, 0, 0.6); backdrop-filter: blur(10px);
+            box-shadow: 0 0 35px rgba(255, 0, 0, 0.4); animation: pulse-border 3s infinite;
         }
-        @keyframes pulse-border {
-            0% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.3); }
-            50% { box-shadow: 0 0 50px rgba(255, 0, 0, 0.7); }
-            100% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.3); }
-        }
-        .alert-box h3 { color: var(--primary-accent); margin-bottom: 20px; font-size: clamp(1.5rem, 4vw, 2rem); }
-        .alert-box p { max-width: 100%; margin-bottom: 20px; }
-        .alert-box ul { padding-left: 0; max-width: 400px; margin: 0 auto; text-align: left;}
-        .alert-box li { padding-left: 25px; }
-        .alert-box li::before { content: '»'; }
+        @keyframes pulse-border { 0% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.3); } 50% { box-shadow: 0 0 50px rgba(255, 0, 0, 0.7); } 100% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.3); } }
+        .announcement-box h3 { color: var(--primary-accent); margin-bottom: 20px; font-size: clamp(1.5rem, 4vw, 2rem); }
+        .announcement-box p { max-width: 100%; margin-bottom: 20px; }
+        .announcement-box ul { padding-left: 0; max-width: 400px; margin: 0 auto; text-align: left;}
+        .announcement-box li { padding-left: 25px; }
+        .announcement-box li::before { content: '»'; }
 
         /* --- MAGNETIC CTA BUTTON --- */
         .magnetic-button { display: inline-block; position: relative; background-color: var(--primary-accent); color: var(--bg); padding: 16px 40px; border-radius: 5px; text-decoration: none; font-weight: 700; text-transform: uppercase; margin-top: 40px; transition: transform 0.3s cubic-bezier(0.2, 1, 0.8, 1), background-color 0.2s; z-index: 2; border: none; font-family: var(--font-main); }
         .magnetic-button:hover { background-color: #ffffff; color: var(--primary-accent); box-shadow: 0 0 20px #ffffff; }
-        .magnetic-button.disabled { background-color: #555; color: #999; pointer-events: none; box-shadow: none; }
 
         /* --- LIQUID GLASS CARD --- */
-        .card { background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px) saturate(120%); -webkit-backdrop-filter: blur(15px) saturate(120%); border: 1px solid var(--border-color); border-radius: 8px; padding: 30px; position: relative; overflow: hidden; transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease; z-index: 1; height: 100%; }
+        .card { background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px) saturate(120%); -webkit-backdrop-filter: blur(15px) saturate(120%); border: 1px solid var(--border-color); border-radius: 8px; padding: 30px; position: relative; overflow: hidden; transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: center; text-align: center;}
         .card:hover { transform: translateY(-5px); background: rgba(30, 0, 0, 0.6); border-color: var(--primary-accent); box-shadow: 0 0 25px rgba(255, 0, 0, 0.5); }
-        .card h3 { color: var(--primary-accent); margin-bottom: 15px; }
-        .card strong { color: var(--text-primary); }
+        .card h3 { color: var(--primary-accent); margin-bottom: 0; }
+        .card .icon {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            line-height: 1;
+            display: block;
+            color: var(--text-primary);
+        }
         .card::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--primary-accent), transparent); box-shadow: 0 0 10px var(--primary-accent); transition: top 0.6s ease-in-out; }
         .card:hover::after { top: 100%; }
+        .card p { font-size: 0.95rem; max-width: 100%; text-align: center; }
 
-        /* --- PROCESSING/LOCKED CARD --- */
-        .processing-card { text-align: center; border-color: var(--primary-accent); box-shadow: 0 0 25px rgba(255, 0, 0, 0.2); }
-        .processing-card .icon { font-size: 3rem; color: var(--primary-accent); text-shadow: 0 0 15px var(--primary-accent); line-height: 1; }
-        .processing-card .icon.spin { animation: spin 4s linear infinite; }
-        .processing-card h3 { margin-top: 15px; margin-bottom: 10px; letter-spacing: 2px; }
-        .processing-card p { max-width: 100%; font-size: 1.1rem; color: var(--text-primary); }
-        .processing-card::before { /* Animated scanlines effect */
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(0deg, rgba(255, 0, 0, 0.08) 1px, transparent 1px);
-            background-size: 100% 4px; animation: scanlines 12s linear infinite; pointer-events: none;
-        }
-        @keyframes scanlines { from { background-position: 0 0; } to { background-position: 0 100px; } }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        /* --- RESULTS GRID STYLES --- */
+        #teams h3 { text-align: center; margin: 60px 0 20px 0; font-size: clamp(1.5rem, 4vw, 2rem); }
+        #teams h3:first-of-type { margin-top: 0; }
+        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        .result-item { background: rgba(10, 10, 10, 0.5); border: 1px solid var(--border-color); padding: 15px 20px; border-radius: 5px; text-align: center; color: var(--text-secondary); transition: all 0.3s ease; font-weight: 700; }
+        .result-item:hover { color: var(--text-primary); transform: translateY(-3px); border-color: var(--primary-accent); box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); text-shadow: 0 0 5px var(--primary-accent); }
+        .result-item .student-id { display: block; font-size: 0.8rem; color: var(--text-secondary); font-weight: 400; margin-top: 5px; opacity: 0.7; }
 
         /* --- INTERACTIVE EXPANDING CARDS --- */
         .expanding-card-container { display: flex; gap: 20px; width: 100%; min-height: 350px; }
-        .expanding-card { background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px) saturate(120%); -webkit-backdrop-filter: blur(15px) saturate(120%); border: 1px solid var(--border-color); border-radius: 8px; padding: 30px; position: relative; overflow: hidden; transition: flex 0.7s cubic-bezier(0.61, 0, 0.3, 1); flex: 1; }
+        .expanding-card { background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px) saturate(120%); -webkit-backdrop-filter: blur(15px) saturate(120%); border: 1px solid var(--border-color); border-radius: 8px; padding: 30px; position: relative; overflow: hidden; transition: flex 0.7s cubic-bezier(0.61, 0, 0.3, 1); flex: 1; justify-content: flex-start; text-align: left;}
         .expanding-card:hover { flex: 5; }
         .expanding-card h3 { color: var(--primary-accent); margin-bottom: 15px; }
         .expanding-card ul { opacity: 0; transition: opacity 0.5s ease 0.3s; }
         .expanding-card:hover ul { opacity: 1; }
+
+        /* --- [NEW] IDEA SPOTLIGHT TERMINAL --- */
+        #spotlight-terminal {
+            background: rgba(10, 10, 10, 0.7);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            font-family: var(--font-mono);
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.1);
+        }
+        #spotlight-terminal p {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: var(--text-secondary);
+            margin: 0 0 10px 0;
+            line-height: 1.8;
+            max-width: 100%;
+            text-align: left;
+        }
+        #spotlight-terminal .prompt {
+            color: var(--primary-accent);
+            font-weight: 700;
+        }
+        #spotlight-terminal .highlight {
+            color: var(--text-success);
+        }
+        .blinking-cursor {
+            background-color: var(--text-success);
+            animation: blink 1s step-end infinite;
+            width: 10px; /* Width of cursor */
+            height: 1.2rem; /* Height of cursor */
+            display: inline-block;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
 
         /* --- CINEMATIC PHASES SECTION --- */
         .sticky-container { height: 300vh; position: relative; }
@@ -146,75 +180,31 @@
         .phase-descriptions { position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center; }
         .phase-text-block { transition: opacity 0.5s ease-in-out; }
         .phase-text-block h3 { color: var(--primary-accent); }
-        .phase-text-block p { color: var(--text-secondary); max-width: 400px; }
+        .phase-text-block p { color: var(--text-secondary); max-width: 400px; text-align: left; }
 
         /* --- NODE TIMELINE DESIGN --- */
         .timeline-container { position: relative; max-width: 800px; margin: 50px auto; }
         .timeline-container::after { content: ''; position: absolute; width: 3px; background-color: var(--border-color); top: 0; bottom: 0; left: 50%; margin-left: -1.5px; box-shadow: 0 0 10px var(--primary-accent); }
         .timeline-item { padding: 10px 40px; position: relative; width: 50%; }
-        .timeline-item::after { /* The node circle */ content: ''; position: absolute; width: 20px; height: 20px; right: -10px; background-color: var(--bg); border: 4px solid var(--primary-accent); top: 25px; border-radius: 50%; z-index: 1; box-shadow: 0 0 15px var(--primary-accent); }
+        .timeline-item::after { content: ''; position: absolute; width: 20px; height: 20px; right: -10px; background-color: var(--bg); border: 4px solid var(--primary-accent); top: 25px; border-radius: 50%; z-index: 1; box-shadow: 0 0 15px var(--primary-accent); }
         .timeline-item.left { left: 0; }
         .timeline-item.right { left: 50%; }
         .timeline-item.right::after { left: -10px; }
-        .timeline-content { padding: 20px 30px; background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--border-color); position: relative; border-radius: 8px; transition: all 0.3s ease; }
+        .timeline-content { padding: 20px 30px; background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--border-color); position: relative; border-radius: 8px; transition: all 0.3s ease; text-align: left; }
         .timeline-content:hover { transform: scale(1.03); border-color: var(--primary-accent); box-shadow: 0 0 25px rgba(255, 0, 0, 0.5); }
         .timeline-content h3 { color: var(--primary-accent); font-size: 1.1rem; margin-bottom: 5px; }
         .timeline-content .time { font-weight: 700; color: var(--text-primary); font-size: 1rem; margin-bottom: 10px; display: block; }
-        .timeline-content p { font-size: 0.9rem; max-width: 100%; }
+        .timeline-content p { font-size: 0.9rem; max-width: 100%; text-align: left;}
+        .timeline-container.corrupted { filter: blur(5px) grayscale(50%); opacity: 0.6; pointer-events: none; transition: all 0.8s ease-in-out; user-select: none; }
 
-        /* --- [NEW] STYLE FOR CORRUPTED/DECRYPTING TIMELINE --- */
-        .timeline-container.corrupted {
-            filter: blur(5px) grayscale(50%);
-            opacity: 0.6;
-            pointer-events: none;
-            transition: all 0.8s ease-in-out;
-            user-select: none;
-        }
-
-        /* --- [NEW] SPONSORS SECTION & ORGANIZERS --- */
-        .logo-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-        }
-        .logo-container {
-            display: block;
-            padding: 20px;
-            background: rgba(10, 10, 10, 0.5);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .logo-container:hover {
-            transform: translateY(-5px) scale(1.05);
-            border-color: var(--primary-accent);
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
-        }
-        .logo-container img {
-            width: auto;
-            height: auto;
-            vertical-align: middle;
-            filter: brightness(0.8) grayscale(100%);
-            transition: filter 0.3s ease;
-        }
-        .logo-container:hover img {
-            filter: brightness(1) grayscale(0%);
-        }
-        /* Sponsor-specific size */
-        .logo-container.sponsor img {
-            max-width: 180px;
-            max-height: 80px;
-        }
-        /* Organizer-specific size */
-        .logo-container.organizer img {
-            max-width: 220px;
-            max-height: 100px;
-        }
-
+        /* --- SPONSORS SECTION & ORGANIZERS --- */
+        .logo-grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 40px; }
+        .logo-container { display: block; padding: 20px; background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--border-color); border-radius: 8px; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+        .logo-container:hover { transform: translateY(-5px) scale(1.05); border-color: var(--primary-accent); box-shadow: 0 0 25px rgba(255, 0, 0, 0.5); }
+        .logo-container img { width: auto; height: auto; vertical-align: middle; filter: brightness(0.8) grayscale(100%); transition: filter 0.3s ease; }
+        .logo-container:hover img { filter: brightness(1) grayscale(0%); }
+        .logo-container.sponsor img { max-width: 180px; max-height: 80px; }
+        .logo-container.organizer img { max-width: 220px; max-height: 100px; }
 
         /* --- FOOTER & COUNTDOWN --- */
         footer { text-align: center; border-top: 1px solid var(--border-color); background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1; }
@@ -238,9 +228,9 @@
 
         /* --- ACCORDION (DROPDOWN) STYLES --- */
         .accordion-container { max-width: 800px; margin: 0 auto; }
-        .accordion-item { background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px) saturate(120%); -webkit-backdrop-filter: blur(15px) saturate(120%); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 20px; transition: all 0.3s ease; }
+        .accordion-item { background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px) saturate(120%); -webkit-backdrop-filter: blur(15px) saturate(120%); border: 1px solid var(--border-color); border-radius: 8px; margin-bottom: 20px; transition: all 0.3s ease; text-align: left;}
         .accordion-item:hover { border-color: var(--primary-accent); box-shadow: 0 0 25px rgba(255, 0, 0, 0.5); }
-        .accordion-item summary { font-family: var(--font-main); font-size: 1.15rem; font-weight: 700; color: var(--primary-accent); padding: 20px 30px; list-style: none; /* Hide default triangle */ position: relative; transition: all 0.3s ease; }
+        .accordion-item summary { font-family: var(--font-main); font-size: 1.15rem; font-weight: 700; color: var(--primary-accent); padding: 20px 30px; list-style: none; position: relative; transition: all 0.3s ease; }
         .accordion-item summary:hover { color: var(--text-primary); }
         .accordion-item summary::after { content: '+'; font-size: 1.5rem; position: absolute; right: 25px; top: 50%; transform: translateY(-50%); transition: transform 0.2s ease-in-out; color: var(--text-secondary); }
         .accordion-item[open] summary::after { content: '-'; transform: translateY(-50%) rotate(45deg); color: var(--primary-accent); }
@@ -248,32 +238,28 @@
 
         /* --- RESPONSIVE DESIGN --- */
         @media (max-width: 1024px) {
-            /* --- Phases Section --- */
             .sticky-container { height: auto; }
             .sticky-content { position: relative; display: flex; flex-direction: column; height: auto; padding: 80px 20px; gap: 30px; }
             .phase-visual { display: none; }
             .phase-descriptions { gap: 30px; counter-reset: phase-counter; }
-            .phase-text-block { background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--border-color); border-radius: 8px; padding: 25px; padding-top: 40px; position: relative; overflow: hidden; }
+            .phase-text-block { background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid var(--border-color); border-radius: 8px; padding: 25px; padding-top: 40px; position: relative; overflow: hidden; text-align: left; }
             .phase-text-block p { max-width: 100%; }
             .phase-text-block h3::before { counter-increment: phase-counter; content: "0" counter(phase-counter); position: absolute; top: 0px; right: 15px; font-size: 4rem; font-weight: 900; color: rgba(255, 255, 255, 0.1); line-height: 1; z-index: -1; }
-            /* --- Expanding Cards --- */
             .expanding-card-container { flex-direction: column; min-height: unset; height: auto; }
             .expanding-card:hover { flex: 1; }
             .expanding-card ul { opacity: 1; }
         }
 
         @media (max-width: 768px) {
-            body { padding-top: 60px; } /* Adjust padding for taller mobile timer bar */
+            body { padding-top: 60px; }
             #top-status-bar { flex-direction: column; gap: 5px; padding: 8px 0; font-size: 0.8rem; }
-            header.main-header { top: 60px; } /* Adjust header top for taller mobile timer bar */
+            header.main-header { top: 60px; }
             .container { padding: 80px 15px; }
             p, li { text-align: left; margin: 0 auto; max-width: 100%; }
-            /* --- Mobile Timeline --- */
             .timeline-container::after { left: 15px; }
             .timeline-item { width: 100%; padding-left: 50px; padding-right: 15px; }
             .timeline-item.right { left: 0%; }
             .timeline-item::after { left: 6px; }
-            /* --- Mobile Navigation --- */
             header.main-header.nav-open .logo { color: var(--primary-accent); }
             .hamburger-menu { display: block; width: 30px; height: 22px; position: relative; z-index: 101; border: none; background: transparent; }
             .hamburger-menu span { display: block; position: absolute; height: 3px; width: 100%; background: var(--text-primary); border-radius: 3px; left: 0; transition: all 0.25s ease-in-out; }
@@ -287,18 +273,17 @@
             header nav { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px); flex-direction: column; justify-content: center; align-items: center; gap: 40px; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.2, 1, 0.8, 1); }
             header.nav-open nav { transform: translateX(0); }
             header nav a { font-size: 1.5rem; }
-            /* --- General adjustments --- */
-            li:hover { transform: translateX(5px); }
             .grid { grid-template-columns: 1fr; }
+            .results-grid { grid-template-columns: 1fr; }
             .footer-quote { max-width: 100%; }
-            .logo-grid { flex-direction: column; } /* Stack logos on mobile */
+            .logo-grid { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
 <div id="top-status-bar">
-    <strong>SYSTEM STATUS:</strong> PHASE ONE SUBMISSIONS CLOSED. ANALYSIS IN PROGRESS...
+    <strong>SYSTEM STATUS:</strong> CONNECTION ESTABLISHED. PHASE 2 PARTICIPANTS ANNOUNCED.
 </div>
 
 <div id="galaxy-video-bg">
@@ -314,6 +299,7 @@
     <div class="logo">Glitch 1.0</div>
     <nav id="main-nav">
         <a href="#about">About</a>
+        <a href="#categories">Categories</a>
         <a href="#teams">Teams</a>
         <a href="#phases">Phases</a>
         <a href="#schedule">Schedule</a>
@@ -331,15 +317,22 @@
     <section id="hero">
         <h1 class="hero-title" data-text="Glitch 1.0">Glitch 1.0</h1>
         <p class="section-subtitle fade-in" style="max-width: 600px; transition-delay: 0.5s;">
-            Phase One protocol terminated. Thank you for your submissions. The mainframe is now analyzing the data streams.
+            Phase One analysis complete. The mainframe has selected the top contenders. Congratulations to all participants.
         </p>
-        <a href="#teams" class="magnetic-button fade-in" style="transition-delay: 0.8s;">AWAITING DIRECTIVE ></a>
+        <a href="#teams" class="magnetic-button fade-in" style="transition-delay: 0.8s;">VIEW RESULTS ></a>
     </section>
 
-    <section id="announcement">
-        <div class="alert-box fade-in">
-            <h3>📢 PHASE 2 & 3 UPDATE</h3>
-            <p>Dear Participants, a new directive has been issued. Both <strong>Phase 2 – Vibe Coding</strong> and <strong>Phase 3 – The Mainframe</strong> will be executed on <strong>19th September 2025</strong> at Amity University Patna.</p>
+    <section id="directive-announcement" style="padding: 60px 20px 0 20px; text-align: center;">
+        <div class="announcement-box fade-in">
+            <h3>Directive: Problem Statements</h3>
+            <p style="font-size: 1.1rem; margin-bottom: 0;">All problem statements will be released on <strong>19th September 2025</strong> at the start of the on-campus event. Prepare your systems.</p>
+        </div>
+    </section>
+
+    <section id="announcement" style="padding-top: 60px;">
+        <div class="announcement-box fade-in">
+            <h3>📢 Phase 2 & 3 Schedule</h3>
+            <p>A new directive has been issued. Both <strong>Phase 2 – Vibe Coding</strong> and <strong>Phase 3 – The Mainframe</strong> will be executed on <strong>19th September 2025</strong> at Amity University Patna.</p>
             <ul>
                 <li><strong>Phase 2:</strong> 3-hour Vibe Coding session.</li>
                 <li><strong>Phase 3:</strong> 1-hour Mainframe challenge for the top 10 teams.</li>
@@ -375,21 +368,96 @@
         </div>
     </section>
 
-    <section id="teams" class="container">
-        <h2 class="fade-in">Transmission Received</h2>
-        <p class="section-subtitle fade-in">Thank you for your active participation. The top 50 teams are being selected. Results will be broadcasted shortly.</p>
+    <section id="categories" class="container">
+        <h2 class="fade-in">Problem Categories</h2>
+        <p class="section-subtitle fade-in">Choose your domain. Problem statements for each category will be released on the day of the event. Master your craft.</p>
         <div class="grid fade-in">
             <div class="card">
-                <h3>Transmission Acknowledged</h3>
-                <p>Your innovative concepts have been successfully uploaded to the mainframe. We commend every participant for their dedication and creativity.</p>
+                <span class="icon">[E / S]</span>
+                <h3>Environment & Sustainability</h3>
+                <p>Projects that address environmental issues or promote a sustainable future.</p>
             </div>
-            <div class="card processing-card">
-                <div class="icon spin">⚙️</div>
-                <h3>REVIEWING SUBMISSIONS</h3>
-                <p>Finalists will be announced on this channel.</p>
+            <div class="card">
+                <span class="icon">[H & W]</span>
+                <h3>Healthcare & Wellbeing</h3>
+                <p>Solutions aimed at improving physical health, mental wellbeing, or medical awareness.</p>
+            </div>
+            <div class="card">
+                <span class="icon">[I & P]</span>
+                <h3>Innovation & Productivity</h3>
+                <p>Creative tools and solutions designed to enhance student life or streamline daily tasks.</p>
+            </div>
+            <div class="card">
+                <span class="icon">[E & L]</span>
+                <h3>Education & Learning</h3>
+                <p>Tools that facilitate learning new skills, or introduce gamified educational experiences.</p>
+            </div>
+            <div class="card">
+                <span class="icon">[F & L]</span>
+                <h3>Fun & Lifestyle</h3>
+                <p>Entertaining applications, fun utilities, or hacks that improve everyday lifestyle.</p>
+            </div>
+            <div class="card">
+                <span class="icon">[ ??? ]</span>
+                <h3>Surprise Category</h3>
+                <p>A secret theme that will challenge your adaptability and creativity on the spot.</p>
             </div>
         </div>
     </section>
+
+    <section id="teams" class="container">
+        <h2 class="fade-in">Transmission Decrypted: Phase 2 Qualifiers</h2>
+        <p class="section-subtitle fade-in">Congratulations, contenders! Your signals were the strongest. The mainframe has verified your access for Phase 2. Welcome to the next level.</p>
+
+        <div class="fade-in">
+            <h3>Selected Teams</h3>
+            <div class="results-grid">
+                <div class="result-item">Eco Vision AI</div>
+                <div class="result-item">ZeroDayHeroes</div>
+                <div class="result-item">Scholarly duo</div>
+                <div class="result-item">Suraksha-20</div>
+                <div class="result-item">Setucode and chill</div>
+                <div class="result-item">Syncronauts</div>
+                <div class="result-item">GREEN AND GROW</div>
+                <div class="result-item">EcoBin</div>
+                <div class="result-item">Ayan & Abhishek</div>
+                <div class="result-item">Ecolgniters</div>
+                <div class="result-item">WELLNEXUS</div>
+                <div class="result-item">Hack2HealSquad</div>
+                <div class="result-item">Veri - Tech</div>
+                <div class="result-item">GREEN FLEET</div>
+                <div class="result-item">Team Error</div>
+                <div class="result-item">CircuitBreakers</div>
+                <div class="result-item">The Challengers</div>
+                <div class="result-item">RecycleVisionCare</div>
+                <div class="result-item">CryptSmart Learning Hub</div>
+                <div class="result-item">MediAid</div>
+                <div class="result-item">Innov8r</div>
+            </div>
+
+            <h3>Selected Individuals</h3>
+            <div class="results-grid">
+                <div class="result-item">MD REYAZUDDIN ANSARI<span class="student-id">A45304825077</span></div>
+                <div class="result-item">Anish Raj<span class="student-id">A45304925031</span></div>
+                <div class="result-item">Umair Daniyal<span class="student-id">A45304823086</span></div>
+                <div class="result-item">Sourav Kumar Pandey<span class="student-id">A45304823052</span></div>
+                <div class="result-item">Zulfekar Abbas<span class="student-id">A45304825031</span></div>
+                <div class="result-item">Ishu singh<span class="student-id">A45304825042</span></div>
+                <div class="result-item">Nikhil raj<span class="student-id">A45304825037</span></div>
+                <div class="result-item">Ayush<span class="student-id">A45304825002</span></div>
+                <div class="result-item">Vivek kumar<span class="student-id">A45304824012</span></div>
+                <div class="result-item" style="grid-column: span 1 / auto;">Vishwajeet kumar<span class="student-id">A45304823150</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="idea-spotlight" class="container">
+        <h2 class="fade-in">Anomalous Signals Detected</h2>
+        <p class="section-subtitle fade-in">The following high-potential idea fragments were intercepted from the Phase 1 data stream by the mainframe...</p>
+        <div id="spotlight-terminal" class="fade-in">
+        </div>
+    </section>
+
 
     <section id="phases" class="container-fullwidth">
         <div class="sticky-container">
@@ -402,11 +470,11 @@
                 <div class="phase-descriptions">
                     <div class="phase-text-block">
                         <h3>Phase One – Idea Protocol</h3>
-                        <p>An online submission round where teams submit their project ideas. Only the top 50 most innovative concepts will be selected to advance.</p>
+                        <p>An online submission round where teams submit their project ideas. Only the most innovative concepts advance.</p>
                     </div>
                     <div class="phase-text-block">
                         <h3>Phase Two – Vibe Coding</h3>
-                        <p>The selected 50 teams compete in a high-stakes, 3-hour on-campus coding session, solving real-world problems under pressure.</p>
+                        <p>The selected qualifiers compete in a high-stakes, 3-hour on-campus coding session, solving real-world problems under pressure.</p>
                     </div>
                     <div class="phase-text-block">
                         <h3>Phase Three – The Mainframe</h3>
@@ -421,62 +489,14 @@
         <h2 class="fade-in">SCHEDULE ANOMALY DETECTED</h2>
         <p class="section-subtitle fade-in" id="schedule-subtitle">Recalibrating event parameters... New directive incoming. Stand by for temporal realignment.</p>
         <div class="timeline-container fade-in corrupted">
-            <div class="timeline-item left">
-                <div class="timeline-content">
-                    <span class="time">8:00 – 8:30 AM</span>
-                    <h3>Rules and Setup</h3>
-                    <p>Team Check-in & Directives Briefing</p>
-                </div>
-            </div>
-            <div class="timeline-item right">
-                <div class="timeline-content">
-                    <span class="time">9:00 – 9:30 AM</span>
-                    <h3>Inauguration</h3>
-                    <p>Event Protocol Initiated</p>
-                </div>
-            </div>
-            <div class="timeline-item left">
-                <div class="timeline-content">
-                    <span class="time">9:30 – 10:00 AM</span>
-                    <h3>System Sync & Networking</h3>
-                    <p>Final preparations before the challenge begins.</p>
-                </div>
-            </div>
-            <div class="timeline-item right">
-                <div class="timeline-content">
-                    <span class="time">10:00 AM – 1:00 PM</span>
-                    <h3>Phase 2: Coding Round</h3>
-                    <p>3-hour intensive coding session</p>
-                </div>
-            </div>
-            <div class="timeline-item left">
-                <div class="timeline-content">
-                    <span class="time">1:00 – 2:00 PM</span>
-                    <h3>Judging & Evaluation</h3>
-                    <p>Mainframe analyzing submissions</p>
-                </div>
-            </div>
-            <div class="timeline-item right">
-                <div class="timeline-content">
-                    <span class="time">2:00 – 2:30 PM</span>
-                    <h3>Snacks Break</h3>
-                    <p>System Recharge & Refuel</p>
-                </div>
-            </div>
-            <div class="timeline-item left">
-                <div class="timeline-content">
-                    <span class="time">3:00 – 4:00 PM</span>
-                    <h3>Phase 3: Quick Changes</h3>
-                    <p>1-hour high-pressure challenge</p>
-                </div>
-            </div>
-            <div class="timeline-item right">
-                <div class="timeline-content">
-                    <span class="time">4:30 PM</span>
-                    <h3>Results & Prize Distribution</h3>
-                    <p>Victory Protocols Engaged</p>
-                </div>
-            </div>
+            <div class="timeline-item left"> <div class="timeline-content"> <span class="time">8:00 – 8:30 AM</span> <h3>Rules and Setup</h3> <p>Team Check-in & Directives Briefing</p> </div> </div>
+            <div class="timeline-item right"> <div class="timeline-content"> <span class="time">9:00 – 9:30 AM</span> <h3>Inauguration</h3> <p>Event Protocol Initiated</p> </div> </div>
+            <div class="timeline-item left"> <div class="timeline-content"> <span class="time">9:30 – 10:00 AM</span> <h3>System Sync & Networking</h3> <p>Final preparations before the challenge begins.</p> </div> </div>
+            <div class="timeline-item right"> <div class="timeline-content"> <span class="time">10:00 AM – 1:00 PM</span> <h3>Phase 2: Coding Round</h3> <p>3-hour intensive coding session</p> </div> </div>
+            <div class="timeline-item left"> <div class="timeline-content"> <span class="time">1:00 – 2:00 PM</span> <h3>Judging & Evaluation</h3> <p>Mainframe analyzing submissions</p> </div> </div>
+            <div class="timeline-item right"> <div class="timeline-content"> <span class="time">2:00 – 2:30 PM</span> <h3>Snacks Break</h3> <p>System Recharge & Refuel</p> </div> </div>
+            <div class="timeline-item left"> <div class="timeline-content"> <span class="time">3:00 – 4:00 PM</span> <h3>Phase 3: Quick Changes</h3> <p>1-hour high-pressure challenge</p> </div> </div>
+            <div class="timeline-item right"> <div class="timeline-content"> <span class="time">4:30 PM</span> <h3>Results & Prize Distribution</h3> <p>Victory Protocols Engaged</p> </div> </div>
         </div>
     </section>
 
@@ -484,12 +504,8 @@
         <h2 class="fade-in">Organizers & University</h2>
         <p class="section-subtitle fade-in">Presented by the Techpreneur Club in association with Amity University Patna.</p>
         <div class="logo-grid fade-in">
-            <div class="logo-container organizer">
-                <img src="tech.png" alt="Techpreneur Club Logo">
-            </div>
-            <div class="logo-container organizer">
-                <img src="ami.png" alt="Amity University Patna Logo">
-            </div>
+            <div class="logo-container organizer"> <img src="tech.png" alt="Techpreneur Club Logo"> </div>
+            <div class="logo-container organizer"> <img src="ami.png" alt="Amity University Patna Logo"> </div>
         </div>
     </section>
 
@@ -497,53 +513,32 @@
         <h2 class="fade-in">Strategic Partner</h2>
         <p class="section-subtitle fade-in">Powering the matrix. We are grateful for the support of our ally.</p>
         <div class="logo-grid fade-in">
-            <a href="#" target="_blank" rel="noopener noreferrer" class="logo-container sponsor">
-                <img src="Zorvix.png" alt="Zorvix Logo">
-            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer" class="logo-container sponsor"> <img src="Zorvix.png" alt="Zorvix Logo"> </a>
         </div>
     </section>
 
     <section id="faqs" class="container">
         <h2 class="fade-in">FAQs: Glitch 1.0</h2>
         <div class="accordion-container fade-in">
-            <details class="accordion-item">
-                <summary>1. What is the team size limit?</summary>
-                <p>Teams can have a minimum of 1 and a maximum of 2 members.</p>
-            </details>
-            <details class="accordion-item">
-                <summary>2. What are the key dates for the event?</summary>
-                <p>The online submission for Phase One has closed. The main on-campus event, including both <strong>Phase Two and Phase Three</strong>, will be held on <strong>Friday, September 19th, 2025</strong>.</p>
-            </details>
-            <details class="accordion-item">
-                <summary>3. Where will the on-campus event be held?</summary>
-                <p>The on-campus phases will take place at Amity University Patna.</p>
-            </details>
-            <details class="accordion-item">
-                <summary>4. Is this event only for Amity University students?</summary>
-                <p>Yes, this is an internal hackathon exclusively for students of Amity University Patna (AIIT department).</p>
-            </details>
-            <details class="accordion-item">
-                <summary>5. What if I don't have a team?</summary>
-                <p>You can participate individually. We also encourage you to connect with others during the warm-up session to form a team.</p>
-            </details>
+            <details class="accordion-item"> <summary>1. What are the problem categories?</summary> <p>You can choose from five main categories: Environment & Sustainability, Healthcare & Wellbeing, Innovation & Productivity, Education & Learning, and Fun & Lifestyle. There is also a sixth 'Surprise' category for those who want an extra challenge! Specific problem statements for each will be provided on the event day.</p> </details>
+            <details class="accordion-item"> <summary>2. What is the team size limit?</summary> <p>Teams can consist of a minimum of 1 and a maximum of 2 members.</p> </details>
+            <details class="accordion-item"> <summary>3. Can I participate individually?</summary> <p>Yes, participation was open to both teams and individuals. The final list of all qualified participants for Phase 2 has been announced.</p> </details>
+            <details class="accordion-item"> <summary>4. What are the key dates for the event?</summary> <p>The online submission for Phase One has closed. The main on-campus event, including both <strong>Phase Two and Phase Three</strong>, will be held on <strong>Friday, September 19th, 2025</strong>.</p> </details>
+            <details class="accordion-item"> <summary>5. Where will the on-campus event be held?</summary> <p>The on-campus phases will take place at Amity University Patna.</p> </details>
+            <details class="accordion-item"> <summary>6. Is this event only for Amity University students?</summary> <p>Yes, this is an internal hackathon exclusively for students of Amity University Patna (AIIT department).</p> </details>
         </div>
     </section>
 
     <section id="terminal-typer" class="container fade-in">
         <h2 class="fade-in">Terminal Typer</h2>
-        <p class="section-subtitle fade-in" style="max-width: 760px;">
-            Execute the commands with speed and precision. The mainframe waits for no one.
-        </p>
-
-        <div id="typer-window" class="fade-in" style="background: rgba(10,10,10,0.7); border: 1px solid var(--border-color); border-radius: 8px; padding: 25px; font-family: 'Courier New', monospace; box-shadow: 0 0 25px rgba(255, 0, 0, 0.1);">
-            <div id="text-to-type" style="font-size: clamp(1rem, 2.5vw, 1.2rem); color: var(--text-secondary); margin-bottom: 20px; line-height: 1.8; user-select: none;">
-            </div>
+        <p class="section-subtitle fade-in" style="max-width: 760px;"> Execute the commands with speed and precision. The mainframe waits for no one. </p>
+        <div id="typer-window" class="fade-in" style="background: rgba(10,10,10,0.7); border: 1px solid var(--border-color); border-radius: 8px; padding: 25px; font-family: var(--font-mono); box-shadow: 0 0 25px rgba(255, 0, 0, 0.1);">
+            <div id="text-to-type" style="font-size: clamp(1rem, 2.5vw, 1.2rem); color: var(--text-secondary); margin-bottom: 20px; line-height: 1.8; user-select: none;"> </div>
             <div style="display: flex; align-items: center; border-top: 1px solid var(--border-color); padding-top: 15px;">
                 <span style="color: var(--primary-accent); font-weight: 700;">&gt;&nbsp;</span>
-                <input type="text" id="typing-input" placeholder="Start typing here to begin..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width: 100%; background: transparent; border: none; color: var(--text-primary); font-size: clamp(1rem, 2.5vw, 1.2rem); font-family: 'Courier New', monospace; outline: none;">
+                <input type="text" id="typing-input" placeholder="Start typing here to begin..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width: 100%; background: transparent; border: none; color: var(--text-primary); font-size: clamp(1rem, 2.5vw, 1.2rem); font-family: var(--font-mono); outline: none;">
             </div>
         </div>
-
         <div id="typer-stats" style="display: flex; justify-content: space-between; max-width: 500px; margin: 25px auto 0 auto; font-size: 1.2rem;">
             <div>Time: <span id="typer-time" style="color: var(--primary-accent); font-weight: 700;">60</span>s</div>
             <div>WPM: <span id="typer-wpm" style="color: var(--primary-accent); font-weight: 700;">0</span></div>
@@ -566,41 +561,29 @@
         <div class="organizers">
             <p><strong>Organized by: Techpreneur Club, Amity institute of Information and Technology, Amity University Patna</strong></p>
         </div>
-        <p class="webpage-credit">
-            Website by - <a href="https://www.linkedin.com/in/hariom-sharnam" target="_blank" rel="noopener noreferrer">HARIOM SHARNAM</a> | Deployed by - <a href="https://www.linkedin.com/in/onlywith-ashwin/" target="_blank" rel="noopener noreferrer">ASHWIN MEHTA</a>
-        </p>
+        <p class="webpage-credit"> Website by - <a href="https://www.linkedin.com/in/hariom-sharnam" target="_blank" rel="noopener noreferrer">HARIOM SHARNAM</a> | Deployed by - <a href="https://www.linkedin.com/in/onlywith-ashwin/" target="_blank" rel="noopener noreferrer">ASHWIN MEHTA</a> </p>
     </div>
 </footer>
 
 <script>
     (function() {
+        // Script for Terminal Typer Game
         const textToTypeEl = document.getElementById('text-to-type');
         const typingInput = document.getElementById('typing-input');
         const timerEl = document.getElementById('typer-time');
         const wpmEl = document.getElementById('typer-wpm');
         const resetBtn = document.getElementById('reset-typer-btn');
-
         if (!textToTypeEl || !typingInput) return;
-
-        const snippets = [
-            "print('Hello, Glitch!')", "name = input('Enter your name: ')", "for i in range(5):",
-            "import random", "def calculate_sum(x, y):", "numbers = [1, 2, 3, 4, 5]",
-            "if score > 90:", "data = {'id': 101, 'status': 'active'}"
-        ];
-
+        const snippets = [ "print('Hello, Glitch!')", "name = input('Enter your name: ')", "for i in range(5):", "import random", "def calculate_sum(x, y):", "numbers = [1, 2, 3, 4, 5]", "if score > 90:", "data = {'id': 101, 'status': 'active'}" ];
         let timer; let timeRemaining = 60; let gameActive = false; let charTyped = 0; const TIME_LIMIT = 60;
-
         function resetGame() {
             clearInterval(timer); gameActive = false; timeRemaining = TIME_LIMIT; charTyped = 0;
             const randomSnippet = snippets[Math.floor(Math.random() * snippets.length)];
             textToTypeEl.innerHTML = '';
-            randomSnippet.split('').forEach(char => {
-                const span = document.createElement('span'); span.innerText = char; textToTypeEl.appendChild(span);
-            });
-            typingInput.value = ''; typingInput.disabled = false; typingInput.focus();
+            randomSnippet.split('').forEach(char => { const span = document.createElement('span'); span.innerText = char; textToTypeEl.appendChild(span); });
+            typingInput.value = ''; typingInput.disabled = false;
             timerEl.textContent = timeRemaining + 's'; wpmEl.textContent = '0'; resetBtn.style.color = 'var(--text-secondary)';
         }
-
         function startGame() {
             if (gameActive) return; gameActive = true;
             timer = setInterval(() => {
@@ -608,28 +591,20 @@
                 const timeElapsed = TIME_LIMIT - timeRemaining;
                 const wpm = timeElapsed > 0 ? Math.round((charTyped / 5) / (timeElapsed / 60)) : 0;
                 wpmEl.textContent = wpm;
-                if (timeRemaining <= 0) {
-                    clearInterval(timer); typingInput.disabled = true; gameActive = false;
-                    resetBtn.style.color = 'var(--primary-accent)';
-                }
+                if (timeRemaining <= 0) { clearInterval(timer); typingInput.disabled = true; gameActive = false; resetBtn.style.color = 'var(--primary-accent)'; }
             }, 1000);
         }
-
         typingInput.addEventListener('input', () => {
             if (!gameActive && timeRemaining === TIME_LIMIT) { startGame(); }
             const textChars = textToTypeEl.querySelectorAll('span'); const inputChars = typingInput.value.split('');
             charTyped = 0; let correct = true;
             textChars.forEach((charSpan, index) => {
                 const inputChar = inputChars[index];
-                if (inputChar == null) { charSpan.style.color = 'var(--text-secondary)'; correct = false;
-                } else if (inputChar === charSpan.innerText) {
-                    charSpan.style.color = '#8ef59b'; if(correct) { charTyped++; }
-                } else { charSpan.style.color = 'var(--primary-accent)'; correct = false; }
+                if (inputChar == null) { charSpan.style.color = 'var(--text-secondary)'; correct = false; }
+                else if (inputChar === charSpan.innerText) { charSpan.style.color = 'var(--text-success)'; if(correct) { charTyped++; } }
+                else { charSpan.style.color = 'var(--primary-accent)'; correct = false; }
             });
-            if (inputChars.length === textChars.length && correct) {
-                clearInterval(timer); gameActive = false; typingInput.disabled = true;
-                resetBtn.style.color = 'var(--primary-accent)';
-            }
+            if (inputChars.length === textChars.length && correct) { clearInterval(timer); gameActive = false; typingInput.disabled = true; resetBtn.style.color = 'var(--primary-accent)'; }
         });
         resetBtn.addEventListener('click', resetGame);
         resetGame();
@@ -639,6 +614,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // --- GENERAL SETUP ---
         const hamburger = document.querySelector('.hamburger-menu');
         const header = document.querySelector('.main-header');
         const navLinks = document.querySelectorAll('#main-nav a');
@@ -651,10 +627,8 @@
 
         if (!isTouchDevice()) {
             document.body.style.cursor = 'none';
-            window.addEventListener('mousemove', e => {
-                gsap.to(cursor, { duration: 0.3, x: e.clientX, y: e.clientY, ease: 'power2.out' });
-            });
-            const hoverables = document.querySelectorAll('a, button, .card, tr, .expanding-card, .token, summary, .timeline-content, input, .logo-container');
+            window.addEventListener('mousemove', e => { gsap.to(cursor, { duration: 0.3, x: e.clientX, y: e.clientY, ease: 'power2.out' }); });
+            const hoverables = document.querySelectorAll('a, button, .card, .result-item, .expanding-card, summary, .timeline-content, input, .logo-container');
             hoverables.forEach(el => {
                 el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
                 el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
@@ -665,24 +639,16 @@
             const magneticButtons = document.querySelectorAll('.magnetic-button');
             magneticButtons.forEach(button => {
                 button.addEventListener('mousemove', function(e) {
-                    const rect = this.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
+                    const rect = this.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2;
                     gsap.to(this, { duration: 0.3, x: x * 0.2, y: y * 0.2, ease: 'power2.out' });
                 });
-                button.addEventListener('mouseleave', function() {
-                    gsap.to(this, { duration: 0.3, x: 0, y: 0, ease: 'elastic.out(1, 0.3)' });
-                });
+                button.addEventListener('mouseleave', function() { gsap.to(this, { duration: 0.3, x: 0, y: 0, ease: 'elastic.out(1, 0.3)' }); });
             });
         }
 
-        // --- GENERAL FADE-IN OBSERVER ---
         const fadeInObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    fadeInObserver.unobserve(entry.target);
-                }
+                if (entry.isIntersecting) { entry.target.classList.add('is-visible'); fadeInObserver.unobserve(entry.target); }
             });
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in').forEach(el => fadeInObserver.observe(el));
@@ -695,12 +661,10 @@
                     clearInterval(countdownInterval);
                     const liveMessage = "<h3 style='color: var(--primary-accent);'>The Event is LIVE!</h3>";
                     if (document.getElementById('countdown-timer')) document.getElementById('countdown-timer').innerHTML = liveMessage;
+                    if(document.querySelector('.footer-quote')) document.querySelector('.footer-quote').textContent = "The challenge has begun.";
                     return;
                 }
-                const d = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((difference % (1000 * 60)) / 1000);
+                const d = Math.floor(difference / (1000 * 60 * 60 * 24)); const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)); const s = Math.floor((difference % (1000 * 60)) / 1000);
                 const format = (num) => (num < 10 ? '0' + num : num);
                 const updateElement = (id, value) => { const el = document.getElementById(id); if (el) el.innerText = format(value); };
                 updateElement('days', d); updateElement('hours', h); updateElement('minutes', m); updateElement('seconds', s);
@@ -730,26 +694,75 @@
             }
         }
 
-        // --- [NEW] TIMELINE DECRYPTION ---
+        // --- TIMELINE DECRYPTION ---
         const timelineObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const timeline = entry.target;
-                    const subtitle = document.getElementById('schedule-subtitle');
+                    const timeline = entry.target; const subtitle = document.getElementById('schedule-subtitle');
                     setTimeout(() => {
                         timeline.classList.remove('corrupted');
-                        if (subtitle) {
-                            subtitle.textContent = "Temporal Realignment Complete. Schedule Locked and Verified.";
-                        }
-                    }, 1000); // 1-second delay for effect
-                    timelineObserver.unobserve(timeline); // Only run once
+                        if (subtitle) { subtitle.textContent = "Temporal Realignment Complete. Schedule Locked and Verified."; }
+                    }, 1000);
+                    timelineObserver.unobserve(timeline);
                 }
             });
-        }, { threshold: 0.5 }); // Trigger when 50% of the timeline is visible
-
+        }, { threshold: 0.5 });
         const corruptedTimeline = document.querySelector('#schedule .timeline-container.corrupted');
-        if (corruptedTimeline) {
-            timelineObserver.observe(corruptedTimeline);
+        if (corruptedTimeline) { timelineObserver.observe(corruptedTimeline); }
+
+        // --- [NEW] IDEA SPOTLIGHT TYPEWRITER ---
+        const terminalEl = document.getElementById('spotlight-terminal');
+        const ideasToType = [
+            "AI-powered social travel platform",
+            "GREEN AND GROW",
+            "AnnaDaan — Smart Food Rescue",
+            "Fake News Detector",
+            "Sentimo"
+        ];
+
+        function typeWriter(lines, element, lineIndex) {
+            if (lineIndex >= lines.length) {
+                const endPrompt = document.createElement('p');
+                endPrompt.innerHTML = `<span class="prompt">></span> DECRYPTION COMPLETE.`;
+                element.appendChild(endPrompt);
+                return;
+            }
+
+            let charIndex = 0;
+            const line = lines[lineIndex];
+            const p = document.createElement('p');
+            const promptSpan = `<span class="prompt">> Signal ${lineIndex + 1}: </span>`;
+            const textSpan = document.createElement('span');
+            textSpan.className = 'highlight';
+            const cursorSpan = `<span class="blinking-cursor"></span>`;
+
+            p.innerHTML = promptSpan;
+            p.appendChild(textSpan);
+            element.appendChild(p);
+
+            const intervalId = setInterval(() => {
+                if (charIndex < line.length) {
+                    textSpan.textContent += line.charAt(charIndex);
+                    charIndex++;
+                } else {
+                    clearInterval(intervalId);
+                    p.innerHTML = promptSpan + `<span class="highlight">${line}</span>`; // Remove cursor after typing
+                    setTimeout(() => typeWriter(lines, element, lineIndex + 1), 500); // Pause before next line
+                }
+            }, 50); // Typing speed
+        }
+
+        const spotlightObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    typeWriter(ideasToType, terminalEl, 0);
+                    observer.unobserve(entry.target); // Ensure it only runs once
+                }
+            });
+        }, { threshold: 0.6 });
+
+        if (terminalEl) {
+            spotlightObserver.observe(terminalEl);
         }
 
     });
